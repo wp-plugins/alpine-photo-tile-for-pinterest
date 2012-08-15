@@ -18,15 +18,17 @@ function APTFPINbyTAP_photo_retrieval($id, $pinterest_options, $defaults){
 
   $key = 'pinterest-'.$pinterest_options['pinterest_source'].'-'.$APTFPINbyTAP_pinterest_uid.'-'.$APTFPINbyTAP_pinterest_board.'-'.$pinterest_options['pinterest_link_style'].'-'.$pinterest_options['pinterest_photo_number'].'-'.$pinterest_options['pinterest_photo_size'];
 
-  $cache = new theAlpinePressSimpleCacheV1();  
-  $cache->setCacheDir( APTFPINbyTAP_CACHE );
-  
-  if( $cache->exists($key) ) {
-    $results = $cache->get($key);
-    $results = @unserialize($results);
-    if( count($results) ){
-      $results['hidden'] .= '<!-- Retrieved from cache -->';
-      return $results;
+  if ( class_exists( 'theAlpinePressSimpleCacheV1' ) && APTFPINbyTAP_CACHE ) {
+    $cache = new theAlpinePressSimpleCacheV1();  
+    $cache->setCacheDir( APTFPINbyTAP_CACHE );
+    
+    if( $cache->exists($key) ) {
+      $results = $cache->get($key);
+      $results = @unserialize($results);
+      if( count($results) ){
+        $results['hidden'] .= '<!-- Retrieved from cache -->';
+        return $results;
+      }
     }
   }
   

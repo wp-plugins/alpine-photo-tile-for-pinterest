@@ -3,7 +3,7 @@
 Plugin Name: Alpine PhotoTile for Pinterest
 Plugin URI: http://thealpinepress.com/alpine-phototile-for-pinterest/
 Description: The Alpine PhotoTile for Pinterest is one plugin in a series that creates a way of retrieving photos from various popular sites and displaying them in a stylish and uniform way. The plugin is capable of retrieving photos from a particular Pinterest user or board. This lightweight but powerful widget takes advantage of WordPress's built in JQuery scripts to create a sleek presentation that I hope you will like.
-Version: 1.0.2
+Version: 1.0.2.1
 Author: the Alpine Press
 Author URI: http://thealpinepress.com/
 License: GNU General Public License v3.0
@@ -33,7 +33,7 @@ if ( ! defined( 'WP_PLUGIN_DIR' ) )
 define( 'APTFPINbyTAP_URL', WP_PLUGIN_URL.'/'. basename(dirname(__FILE__)) . '' );
 define( 'APTFPINbyTAP_DIR', WP_PLUGIN_DIR.'/'. basename(dirname(__FILE__)) . '' );
 define( 'APTFPINbyTAP_CACHE', WP_CONTENT_DIR . '/cache/' . basename(dirname(__FILE__)) . '' );
-define( 'APTFPINbyTAP_VER', '1.0.2' );
+define( 'APTFPINbyTAP_VER', '1.0.2.1' );
 define( 'APTFPINbyTAP_DOMAIN', 'APTFPINbyTAP_domain' );
 define( 'APTFPINbyTAP_HOOK', 'APTFPINbyTAP_hook' );
 define( 'APTFPINbyTAP_ID', 'APTFPINbyTAP' );
@@ -41,9 +41,11 @@ define( 'APTFPINbyTAP_INFO', 'http://thealpinepress.com/alpine-phototile-for-pin
 
 register_deactivation_hook( __FILE__, 'TAP_PhotoTile_Pinterest_remove' );
 function TAP_PhotoTile_Pinterest_remove(){
-  $cache = new theAlpinePressSimpleCacheV1();  
-  $cache->setCacheDir( APTFPINbyTAP_CACHE );
-  $cache->clearAll();
+  if ( class_exists( 'theAlpinePressSimpleCacheV1' ) && APTFPINbyTAP_CACHE ) {
+    $cache = new theAlpinePressSimpleCacheV1();  
+    $cache->setCacheDir( APTFPINbyTAP_CACHE );
+    $cache->clearAll();
+  }
 }
 
 // Register Widget
@@ -107,8 +109,12 @@ class Alpine_PhotoTile_for_Pinterest extends WP_Widget {
     
 	function update( $newoptions, $oldoptions ) {
     $optiondetails = APTFPINbyTAP_option_defaults();
-    foreach( $newoptions as $id=>$input ){
-      $options[$id] = theAlpinePressMenuOptionsValidateV1( $input,$oldoptions[$id],$optiondetails[$id] );
+    if ( function_exists( 'theAlpinePressMenuOptionsValidateV1' ) ) {
+      foreach( $newoptions as $id=>$input ){
+        $options[$id] = theAlpinePressMenuOptionsValidateV1( $input,$oldoptions[$id],$optiondetails[$id] );
+      }
+    }else{
+      $options = $newoptions;
     }
     return $options;
 	}
@@ -141,9 +147,11 @@ class Alpine_PhotoTile_for_Pinterest extends WP_Widget {
     add_action('admin_print_footer_scripts', 'APTFPINbyTAP_menu_toggles');
     
     // Only admin can trigger two week cache cleaning
-    $cache = new theAlpinePressSimpleCacheV1();
-    $cache->setCacheDir( APTFPINbyTAP_CACHE );
-    $cache->clean();
+    if ( class_exists( 'theAlpinePressSimpleCacheV1' ) && APTFPINbyTAP_CACHE ) {
+      $cache = new theAlpinePressSimpleCacheV1();
+      $cache->setCacheDir( APTFPINbyTAP_CACHE );
+      $cache->clean();
+    }
 	}
   add_action('admin_enqueue_scripts', 'APTFPINbyTAP_admin_head_script'); // admin_init so that it is ready when page loads
   

@@ -14,7 +14,7 @@
     $defaults = APTFPINbyTAP_option_defaults();
     $positions = APTFPINbyTAP_option_positions();
  
-  if( count($positions) ){
+  if( count($positions) && function_exists( 'theAlpinePressMenuDisplayCallbackV1' ) ){
     foreach( $positions as $position=>$positionsinfo){
     ?>
       <div class="<?php echo $position ?>"> 
