@@ -10,13 +10,13 @@ function APTFPINbyTAP_display_vertical($id, $options, $source_results){
   $APTFPINbyTAP_linkurl = $source_results['image_perms'];
   $APTFPINbyTAP_photocap = $source_results['image_captions'];
   $APTFPINbyTAP_photourl = $source_results['image_urls'];
-  $APTFPINbyTAP_user_link = $source_results['user_link'];
   $APTFPINbyTAP_originalurl = $source_results['image_originals'];
+  $APTFPINbyTAP_user_link = $source_results['user_link'];
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////       Check Content      /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  if($options['pinterest_photo_number'] != count($APTFPINbyTAP_photourl)){$options['pinterest_photo_number']=count($APTFPINbyTAP_photourl);}
+  if($options['pinterest_photo_number'] != count($APTFPINbyTAP_linkurl)){$options['pinterest_photo_number']=count($APTFPINbyTAP_linkurl);}
   
   for($i = 0;$i<count($APTFPINbyTAP_photocap);$i++){
     $APTFPINbyTAP_photocap[$i] = str_replace('"','',$APTFPINbyTAP_photocap[$i]);
@@ -45,11 +45,12 @@ function APTFPINbyTAP_display_vertical($id, $options, $source_results){
   $shadow = ($options['style_shadow']?'APTFPINbyTAP-img-shadow':'APTFPINbyTAP-img-noshadow');
   $border = ($options['style_border']?'APTFPINbyTAP-img-border':'APTFPINbyTAP-img-noborder');
   $curves = ($options['style_curve_corners']?'APTFPINbyTAP-img-corners':'APTFPINbyTAP-img-nocorners');
+  $highlight = ($options['style_highlight']?'APTFPINbyTAP-img-highlight':'APTFPINbyTAP-img-nohighlight');
   
   for($i = 0;$i<$options['pinterest_photo_number'];$i++){
     $output .= '<div class="APTFPINbyTAP-pinterest-container" >';
       if( $options['pinterest_image_link'] ){ $output .= '<a href="' . $APTFPINbyTAP_linkurl[$i] . '" class="APTFPINbyTAP-vertical-link" target="_blank" title='."'". $APTFPINbyTAP_photocap[$i] ."'".'>'; }
-      $output .= '<img id="'.$id.'-tile-'.$i.'" class="APTFPINbyTAP-image '.$shadow.' '.$border.' '.$curves.'" src="' . $APTFPINbyTAP_photourl[$i] . '" ';
+      $output .= '<img id="'.$id.'-tile-'.$i.'" class="APTFPINbyTAP-image '.$shadow.' '.$border.' '.$curves.' '.$highlight.'" src="' . $APTFPINbyTAP_photourl[$i] . '" ';
       $output .= 'title='."'". $APTFPINbyTAP_photocap[$i] ."'".' alt='."'". $APTFPINbyTAP_photocap[$i] ."' "; // Careful about caps with ""
       $output .= 'border="0" hspace="0" vspace="0" />'; // Override the max-width set by theme
       if( $options['pinterest_image_link'] ){ $output .= '</a>'; }
@@ -75,18 +76,23 @@ function APTFPINbyTAP_display_vertical($id, $options, $source_results){
   // Close container
   $output .= '</div>';
   $output .= '<div class="APTFPINbyTAP_breakline"></div>';
- 
-  echo $output;
   
-  if( $options['style_shadow'] || $options['style_border'] || $options['style_curve_corners'] ){
-    echo '<script>
-          jQuery(window).load(function() {
-            if( jQuery().APTFPINbyTAPAdjustBordersPlugin ){
-              jQuery("#'.$id.'-vertical-parent").APTFPINbyTAPAdjustBordersPlugin();
-            }
+  $highlight = APTFPINbyTAP_get_option("general_highlight_color");
+  $highlight = ($highlight?$highlight:'#64a2d8');
+
+  if( $options['style_shadow'] || $options['style_border'] || $options['style_highlight'] ){
+    $output .= '<script>
+         jQuery(window).load(function() {
+            if(jQuery().APTFPINbyTAPAdjustBordersPlugin ){
+              jQuery("#'.$id.'-vertical-parent").APTFPINbyTAPAdjustBordersPlugin({
+                highlight:"'.$highlight.'",
+              });
+            }  
           });
         </script>';  
   }
+    
+  return $output;
 }  
 
 function APTFPINbyTAP_display_cascade($id, $options, $source_results){
@@ -99,7 +105,7 @@ function APTFPINbyTAP_display_cascade($id, $options, $source_results){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////       Check Content      /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  if($options['pinterest_photo_number'] != count($APTFPINbyTAP_photourl)){$options['pinterest_photo_number']=count($APTFPINbyTAP_photourl);}
+  if($options['pinterest_photo_number'] != count($APTFPINbyTAP_linkurl)){$options['pinterest_photo_number']=count($APTFPINbyTAP_linkurl);}
   
   for($i = 0;$i<count($APTFPINbyTAP_photocap);$i++){
     $APTFPINbyTAP_photocap[$i] = str_replace('"','',$APTFPINbyTAP_photocap[$i]);
@@ -128,13 +134,14 @@ function APTFPINbyTAP_display_cascade($id, $options, $source_results){
   $shadow = ($options['style_shadow']?'APTFPINbyTAP-img-shadow':'APTFPINbyTAP-img-noshadow');
   $border = ($options['style_border']?'APTFPINbyTAP-img-border':'APTFPINbyTAP-img-noborder');
   $curves = ($options['style_curve_corners']?'APTFPINbyTAP-img-corners':'APTFPINbyTAP-img-nocorners'); 
-   
+  $highlight = ($options['style_highlight']?'APTFPINbyTAP-img-highlight':'APTFPINbyTAP-img-nohighlight');
+  
   for($col = 0; $col<$options['style_column_number'];$col++){
     $output .= '<div class="APTFPINbyTAP_cascade_column" style="width:'.(100/$options['style_column_number']- 1 - 1/$options['style_column_number']).'%;float:left;margin:0 0 0 1%;">';
     for($i = $col;$i<$options['pinterest_photo_number'];$i+=$options['style_column_number']){
       $output .= '<div  class="APTFPINbyTAP-pinterest-container" >';
       if( $options['pinterest_image_link'] ){ $output .= '<a href="' . $APTFPINbyTAP_linkurl[$i] . '" class="APTFPINbyTAP-vertical-link" target="_blank" title='."'". $APTFPINbyTAP_photocap[$i] ."'".'>'; }
-      $output .= '<img id="'.$id.'-tile-'.$i.'" class="APTFPINbyTAP-image '.$shadow.' '.$border.' '.$curves.'" src="' . $APTFPINbyTAP_photourl[$i] . '" ';
+      $output .= '<img id="'.$id.'-tile-'.$i.'" class="APTFPINbyTAP-image '.$shadow.' '.$border.' '.$curves.' '.$highlight.'" src="' . $APTFPINbyTAP_photourl[$i] . '" ';
       $output .= 'title='."'". $APTFPINbyTAP_photocap[$i] ."'".' alt='."'". $APTFPINbyTAP_photocap[$i] ."' "; // Careful about caps with ""
       $output .= 'border="0" hspace="0" vspace="0" />'; // Override the max-width set by theme
       if($options['pinterest_pin_it_button']){
@@ -152,7 +159,7 @@ function APTFPINbyTAP_display_cascade($id, $options, $source_results){
   if( !$options['widget_disable_credit_link'] ){
     $output .=  $APTFPINbyTAP_by_link;    
   }          
-  // Close vertical-parent
+  // Close cascade-parent
   $output .= '</div>';    
 
   $output .= '<div class="APTFPINbyTAP_breakline"></div>';
@@ -172,15 +179,21 @@ function APTFPINbyTAP_display_cascade($id, $options, $source_results){
   $output .= '</div>';
   $output .= '<div class="APTFPINbyTAP_breakline"></div>';
  
-  echo $output;
+  $highlight = APTFPINbyTAP_get_option("general_highlight_color");
+  $highlight = ($highlight?$highlight:'#64a2d8');
   
-  echo '<script>
-          jQuery(window).load(function() {
-            if( jQuery().APTFPINbyTAPAdjustBordersPlugin ){
-              jQuery("#'.$id.'-cascade-parent").APTFPINbyTAPAdjustBordersPlugin();
-            }
-          });
-        </script>';
+  if( $options['style_shadow'] || $options['style_border'] || $options['style_highlight'] ){
+    $output .= '<script>
+            jQuery(window).load(function() {
+              if(jQuery().APTFPINbyTAPAdjustBordersPlugin ){
+                jQuery("#'.$id.'-cascade-parent").APTFPINbyTAPAdjustBordersPlugin({
+                  highlight:"'.$highlight.'",
+                });
+              }  
+            });
+          </script>';
+  }
+  return $output;  
 }
 
 
@@ -194,7 +207,7 @@ function APTFPINbyTAP_display_hidden($id, $options, $source_results){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////       Check Content      /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  if($options['pinterest_photo_number'] != count($APTFPINbyTAP_photourl)){$options['pinterest_photo_number']=count($APTFPINbyTAP_photourl);}
+  if($options['pinterest_photo_number'] != count($APTFPINbyTAP_linkurl)){$options['pinterest_photo_number']=count($APTFPINbyTAP_linkurl);}
   
   for($i = 0;$i<count($APTFPINbyTAP_photocap);$i++){
     $APTFPINbyTAP_photocap[$i] = str_replace('"','',$APTFPINbyTAP_photocap[$i]);
@@ -224,13 +237,14 @@ function APTFPINbyTAP_display_hidden($id, $options, $source_results){
   
   $shadow = ($options['style_shadow']?'APTFPINbyTAP-img-shadow':'APTFPINbyTAP-img-noshadow');
   $border = ($options['style_border']?'APTFPINbyTAP-img-border':'APTFPINbyTAP-img-noborder');
+  $highlight = ($options['style_highlight']?'APTFPINbyTAP-img-highlight':'APTFPINbyTAP-img-nohighlight');
   $curves = ($options['style_curve_corners']?'APTFPINbyTAP-img-corners':'APTFPINbyTAP-img-nocorners');
   
   for($i = 0;$i<$options['pinterest_photo_number'];$i++){
     if( $options['pinterest_image_link'] ){ $output .= '<a href="' . $APTFPINbyTAP_linkurl[$i] . '" class="APTFPINbyTAP-link" target="_blank" title='."'". $APTFPINbyTAP_photocap[$i] ."'".'>'; }
-    $output .= '<img id="'.$id.'-tile-'.$i.'" class="APTFPINbyTAP-image '.$shadow.' '.$border.' '.$curves.'" src="' . $APTFPINbyTAP_photourl[$i] . '" ';
+    $output .= '<img id="'.$id.'-tile-'.$i.'" class="APTFPINbyTAP-image '.$shadow.' '.$border.' '.$highlight.' '.$curves.'" src="' . $APTFPINbyTAP_photourl[$i] . '" ';
     $output .= 'title='."'". $APTFPINbyTAP_photocap[$i] ."'".' alt='."'". $APTFPINbyTAP_photocap[$i] ."' "; // Careful about caps with ""
-    $output .= 'border="0" hspace="0" vspace="0" data-original="' . $APTFPINbyTAP_originalurl[$i]. '"/>'; // Override the max-width set by theme
+    $output .= 'border="0" hspace="0" vspace="0" />'; // Override the max-width set by theme
     
     // Load original image size
     if( "gallery" == $options['style_option'] && $APTFPINbyTAP_originalurl[$i] ){
@@ -261,26 +275,41 @@ function APTFPINbyTAP_display_hidden($id, $options, $source_results){
 
   // Close container
   $output .= '</div>';
- 
-  echo $output;
+  $disable = APTFPINbyTAP_get_option('general_loader');
+  $highlight = APTFPINbyTAP_get_option("general_highlight_color");
+  $highlight = ($highlight?$highlight:'#64a2d8');
   
-  echo '<script>
-          jQuery(window).load(function() {
-            if( jQuery().APTFPINbyTAPDisplayPlugin ){
-              jQuery("#'.$id.'-hidden-parent").APTFPINbyTAPDisplayPlugin({
-                style:"'.($options['style_option']?$options['style_option']:'windows').'",
-                shape:"'.($options['style_shape']?$options['style_shape']:'square').'",
-                perRow:"'.($options['style_photo_per_row']?$options['style_photo_per_row']:'3').'",
-                imageLink:'.($options['pinterest_image_link']?'1':'0').',
-                imageBorder:'.($options['style_border']?'1':'0').',
-                imageShadow:'.($options['style_shadow']?'1':'0').',
-                imageCurve:'.($options['style_curve_corners']?'1':'0').',
-                pinIt:'.($options['pinterest_pin_it_button']?'1':'0').',
-                siteURL:"'.get_option( 'siteurl' ).'"
-              });
-            }  
-          });
-        </script>';
+  $output .= '<script>';
+  
+  if(!$disable){
+    $output .= '
+           jQuery(document).ready(function() {
+            jQuery("#'.$id.'-APTFPINbyTAP_container").addClass("loading"); 
+           });';
+  }
+  $output .= '
+         jQuery(window).load(function() {
+          jQuery("#'.$id.'-APTFPINbyTAP_container").removeClass("loading");
+          if( jQuery().APTFPINbyTAPTilesPlugin ){
+            jQuery("#'.$id.'-hidden-parent").APTFPINbyTAPTilesPlugin({
+              style:"'.($options['style_option']?$options['style_option']:'windows').'",
+              shape:"'.($options['style_shape']?$options['style_shape']:'square').'",
+              perRow:"'.($options['style_photo_per_row']?$options['style_photo_per_row']:'3').'",
+              imageLink:'.($options['pinterest_image_link']?'1':'0').',
+              imageBorder:'.($options['style_border']?'1':'0').',
+              imageShadow:'.($options['style_shadow']?'1':'0').',
+              imageCurve:'.($options['style_curve_corners']?'1':'0').',
+              imageHighlight:'.($options['style_highlight']?'1':'0').',
+              galleryHeight:'.($options['style_gallery_height']?$options['style_gallery_height']:'3').',
+              highlight:"'.$highlight.'",
+              pinIt:'.($options['pinterest_pin_it_button']?'1':'0').',
+              siteURL:"'.get_option( 'siteurl' ).'"
+            });
+          }
+        });
+      </script>';
+      
+  return $output; 
 }
 
 ?>

@@ -7,9 +7,9 @@
  */
 
 (function( w, s ) {
-  s.fn.APTFPINbyTAPDisplayPlugin = function( options ) {
+  s.fn.APTFPINbyTAPTilesPlugin = function( options ) {
   
-    options = s.extend( {}, s.fn.APTFPINbyTAPDisplayPlugin.options, options );
+    options = s.extend( {}, s.fn.APTFPINbyTAPTilesPlugin.options, options );
   
     return this.each(function() {  
       var parent = s(this);
@@ -17,7 +17,7 @@
       var images = s('.APTFPINbyTAP-image',imageList);
       var allPerms = s('.APTFPINbyTAP-link',imageList);
       var width = parent.width();
-      
+
       var currentRow,img,newDiv,newDivContainer,src,url,height,theClasses,theHeight,theWidth,perm;
       
       if( 'square' == options.shape && 'windows' == options.style ){
@@ -411,6 +411,22 @@
           newDivContainer.width( newDivContainer.width()-10 );
           newDivContainer.height( newDivContainer.height()-10 );
         }
+        if(options.imageHighlight){
+          if(!options.imageBorder){
+            newDivContainer.addClass('APTFPINbyTAP-highlight-div');
+            newDivContainer.width( newDivContainer.width()-4 );
+            newDivContainer.height( newDivContainer.height()-4 );
+          }
+          newDivContainer.hover(function(){
+            s(this).css({
+              "background": options.highlight,
+            });
+          },function(){
+            s(this).css({
+              "background-color": "#fff",
+            });
+          });
+        }
         if(options.imageShadow){
           newDivContainer.addClass('APTFPINbyTAP-shadow-div');
         }
@@ -436,7 +452,7 @@
     });
   }
   
-  s.fn.APTFPINbyTAPDisplayPlugin.options = {
+  s.fn.APTFPINbyTAPTilesPlugin.options = {
     backgroundClass: 'northbynorth_background',
     parentID: 'parent'
   }    
@@ -459,7 +475,9 @@
           currentImg.removeClass('APTFPINbyTAP-img-border');
           currentImg.css({
             'max-width':(width)+'px',
-            'padding':'5px',
+            'padding':'4px',
+            "margin-left": "1px",
+            "margin-right": "1px",
           });
         }else if( currentImg.hasClass('APTFPINbyTAP-img-noborder') ){
           currentImg.removeClass('APTFPINbyTAP-img-noborder');
@@ -470,13 +488,12 @@
         }
         
         if( currentImg.hasClass('APTFPINbyTAP-img-shadow') ){
-          width -= 8;
+          width -= 2;
           currentImg.removeClass('APTFPINbyTAP-img-shadow');
           currentImg.css({
             "box-shadow": "0 1px 3px rgba(34, 25, 25, 0.4)",
-            "margin-left": "4px",
-            "margin-right": "4px",
-            "margin-bottom": "9px",
+            "margin-left": "1px",
+            "margin-right": "1px",
             'max-width':(width)+'px',
           });
         }else if( currentImg.hasClass('APTFPINbyTAP-img-noshadow') ){
@@ -484,11 +501,33 @@
           currentImg.css({
             'max-width':(width)+'px',
             "box-shadow":"none",
-            "margin-left": 0,
-            "margin-right": 0
           });
         }
         
+        if( currentImg.hasClass('APTFPINbyTAP-img-highlight') ){
+          currentImg.removeClass('APTFPINbyTAP-img-highlight');
+          
+          if( '4px' != currentImg.css('padding-right') ){
+            width -= 6;
+            currentImg.css({
+              'max-width':(width)+'px',
+              'padding':'2px',
+              "margin-left": "1px",
+              "margin-right": "1px",
+            });
+          }
+
+          currentImg.hover(function(){
+            console.log(options.highlight);
+            s(this).css({
+              "background-color": options.highlight,
+            });
+          },function(){
+            s(this).css({
+              "background-color": "#fff",
+            });
+          });
+        }
       });
     });
   }

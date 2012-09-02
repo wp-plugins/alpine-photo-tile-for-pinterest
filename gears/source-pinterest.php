@@ -16,10 +16,10 @@ function APTFPINbyTAP_photo_retrieval($id, $pinterest_options, $defaults){
   $APTFPINbyTAP_pinterest_board = apply_filters( APTFPINbyTAP_HOOK, empty($pinterest_options['pinterest_user_board']) ? 'board' : $pinterest_options['pinterest_user_board'], $pinterest_options );
   $APTFPINbyTAP_pinterest_board = @ereg_replace('[[:cntrl:]]', '', $APTFPINbyTAP_pinterest_board ); // remove ASCII's control characters
 
-  $key = 'pinterest-'.$pinterest_options['pinterest_source'].'-'.$APTFPINbyTAP_pinterest_uid.'-'.$APTFPINbyTAP_pinterest_board.'-'.$pinterest_options['pinterest_link_style'].'-'.$pinterest_options['pinterest_photo_number'].'-'.$pinterest_options['pinterest_photo_size'];
+  $key = 'pinterest-'.$pinterest_options['pinterest_source'].'-'.$APTFPINbyTAP_pinterest_uid.'-'.$APTFPINbyTAP_pinterest_board.'-link-'.$pinterest_options['pinterest_display_link'].'-'.$pinterest_options['pinterest_display_link_style'].'-'.$pinterest_options['pinterest_photo_number'].'-'.$pinterest_options['pinterest_photo_size'];
 
-  if ( class_exists( 'theAlpinePressSimpleCacheV1' ) && APTFPINbyTAP_CACHE ) {
-    $cache = new theAlpinePressSimpleCacheV1();  
+  if ( class_exists( 'theAlpinePressSimpleCacheV2' ) && APTFPINbyTAP_CACHE ) {
+    $cache = new theAlpinePressSimpleCacheV2();  
     $cache->setCacheDir( APTFPINbyTAP_CACHE );
     
     if( $cache->exists($key) ) {

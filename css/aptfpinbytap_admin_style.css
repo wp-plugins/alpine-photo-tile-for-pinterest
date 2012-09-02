@@ -1,7 +1,38 @@
-
+  .icon-alpine{
+    background-image:url('images/Pine-Trees.png');
+    box-shadow: 0 0 2px #999999;
+    border-radius: 3px 3px 3px 3px;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+  }
   .APTFPINbyTAP-pinterest {
     width:100%;
     overflow:hidden;
+  }
+  .APTFPINbyTAP-pinterest.generator, .APTFPINbyTAP-pinterest.plugin-settings{
+    max-width:700px;
+    margin:10px 0 20px 0;
+  }
+  .APTFPINbyTAP-pinterest .help-link{
+    width:100%;
+    clear:both;
+    padding:5px 0;
+    margin: 20px 0 0 0;
+  }
+  .APTFPINbyTAP-pinterest.plugin-settings .title{
+    width:25%;
+    max-width: 180px;
+    min-width: 100px;
+    display:inline-block;
+    margin: 0 10px 0 0;
+    font-size:1.1em;
+  }
+  .APTFPINbyTAP-pinterest.plugin-settings h4{
+    font-size:1.17em;
+  }
+  .APTFPINbyTAP-pinterest.plugin-settings  input[type="text"]{
+    width:100px;
   }
   .APTFPINbyTAP-pinterest .form-table{
     margin:0;

@@ -1,15 +1,15 @@
 <?php
 /**
- * Alpine PhotoTile for Pinterest: Cache Function
+ * Alpine PhotoTile for Flickr: Cache Function
  * The PHP for simple caching functions
  *
  * @since 1.0.1
  *
- * Cache Class Version 1
+ * Cache Class Version 2
  */
  
-if ( !class_exists( 'theAlpinePressSimpleCacheV1' ) ) {
-  class theAlpinePressSimpleCacheV1  {  
+if ( !class_exists( 'theAlpinePressSimpleCacheV2' ) ) {
+  class theAlpinePressSimpleCacheV2  {  
 
     private $cacheDir = 'wp-content/cache/the-alpine-press-cache'; 
     private $expiryInterval = 360; //1*60*60;  1 hour
@@ -56,15 +56,14 @@ if ( !class_exists( 'theAlpinePressSimpleCacheV1' ) ) {
     public function put($key, $content) {  
         $time = time(); //Current Time  
         
-        
-        if (! file_exists($this->cacheDir)){  
+        if ( ! file_exists($this->cacheDir) ){  
             @mkdir($this->cacheDir);  
             
             $cleaning_info = $this->cacheDir . '/cleaning.info'; //Cache info 
             @file_put_contents ($cleaning_info , $time); // save the time of last cache update  
         }
         
-        if ( file_exists($this->cacheDir) ){ 
+        if ( file_exists($this->cacheDir) && is_dir($this->cacheDir) ){ 
             $dir = $this->cacheDir . '/';
             $filename_cache = $dir . $key . '.cache'; //Cache filename  
             $filename_info = $dir . $key . '.info'; //Cache info  
@@ -81,16 +80,22 @@ if ( !class_exists( 'theAlpinePressSimpleCacheV1' ) ) {
         $opendir = @opendir($dir);
         while(false !== ($file = readdir($opendir))) {
             if($file != "." && $file != "..") {
-                if(is_dir($dir.$file)) {
+                if(file_exists($dir.$file)) {
+                    $file_array = @explode('.',$file);
+                    $file_type = @array_pop( $file_array );
+                    // only remove cache or info files
+                    if( 'cache' == $file_type || 'info' == $file_type){
+                        @chmod($dir.$file, 0777);
+                        @unlink($dir.$file);
+                    }
+                }
+                /*elseif(is_dir($dir.$file)) {
                     @chmod($dir.$file, 0777);
                     @chdir('.');
                     @destroy($dir.$file.'/');
                     @rmdir($dir.$file);
-                }
-                elseif(file_exists($dir.$file)) {
-                    @chmod($dir.$file, 0777);
-                    @unlink($dir.$file);
-                }
+                }*/
+
             }
         }
         @closedir($opendir);

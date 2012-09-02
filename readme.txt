@@ -1,10 +1,10 @@
 === Alpine PhotoTile for Pinterest ===
 Contributors: theAlpinePress
 Donate link: thealpinepress.com
-Tags: photos, pinterest, photostream, javascript, jQuery, stylish, pictures, images, widget, sidebar, display, gallery
+Tags: photos, pinterest, photostream, javascript, jQuery, stylish, pictures, images, widget, sidebar, display, gallery, wall
 Requires at least: 2.8
 Tested up to: 3.4.1
-Stable tag: 1.0.2.1
+Stable tag: 1.1.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,3 +45,12 @@ None yet, but I'd like to hear from you. Leave a message at http://thealpinepres
 
 = 1.0.2.1 =
 * Added function and class check before call
+
+= 1.1.1 =
+* Cache filter for .info and .cache (V2)
+* Load styles and scripts to widget.php only
+* Added options page and shortcode generator
+* Added highlight, highlight color option, cache option, and cache time
+* Made option callbacks plugin specific (not global names)
+* Edited style layouts
+* Enqueue JS and CSS on pages containing widget or shortcode only

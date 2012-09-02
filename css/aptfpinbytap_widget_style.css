@@ -7,28 +7,23 @@
 }
 .APTFPINbyTAP_container_class img{
   margin:0;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
-
-img.APTFPINbyTAP-img-shadow{
-  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4) ! important;
-  margin-left: 1% ! important;
-  margin-right: 1% ! important;
-  max-width: 96% ! important;
+.APTFPINbyTAP_container_class.loading{
+  min-height:200px;
+  width:100%;
+  background-image:url("images/loader.gif");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:40px 40px;
+  background-color:#fff;
 }
-img.APTFPINbyTAP-img-noshadow{
-  box-shadow:none ! important;
-  margin-left: 0 ! important;
-  margin-right: 0 ! important;
-  max-width: 98% ! important;
-}
-
-img.APTFPINbyTAP-img-border{
-  background: none repeat scroll 0 0 #FFFFFF ! important;
-  padding:1% ! important;
-}
-img.APTFPINbyTAP-img-noborder{
-  padding:0 ! important; 
+.APTFPINbyTAP_inpost_container {
+  padding:5px 0 10px 0;
+  display:block;
+  clear:both;
+  width:100%;
+  overflow:hidden;
 }
 
 img.APTFPINbyTAP-img-corners{
@@ -138,6 +133,10 @@ img.APTFPINbyTAP-img-nocorners{
 .APTFPINbyTAP-border-div{
   background: none repeat scroll 0 0 #FFFFFF;
   padding:5px;
+}
+.APTFPINbyTAP-highlight-div{
+  background: none repeat scroll 0 0 #FFFFFF;
+  padding:2px;
 }
 .APTFPINbyTAP-shadow-div{
   box-shadow: 1px 1px 3px rgba(34, 25, 25, 0.4);
