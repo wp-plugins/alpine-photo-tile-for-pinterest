@@ -83,7 +83,6 @@
         'name' => 'widget_title',
         'title' => 'Title : ',
         'type' => 'text',
-        'sanitize' => 'nohtml',
         'description' => '',
         'since' => '1.1',
         'default' => ''
@@ -554,7 +553,7 @@
       else if ( 'text' == $fieldtype ) {
         ?>
         <label for="<?php echo $fieldid; ?>"><?php echo $optiontitle ?></label>
-        <input type="text" id="<?php echo $fieldid ?>" name="<?php echo $fieldname; ?>" value="<?php echo wp_filter_nohtml_kses( $value ); ?>" />
+        <input type="text" id="<?php echo $fieldid ?>" name="<?php echo $fieldname; ?>" value="<?php echo ( $value ); ?>" />
         <div class="description"><span class="description"><?php echo $optiondescription; ?></span></div>
         <?php
       } 
@@ -569,7 +568,7 @@
         $value = ($value?$value:$default);
         ?>    
         <label for="<?php echo $fieldid ?>">
-        <input type="text" id="<?php echo $fieldid ?>" name="<?php echo $fieldname; ?>" class="APTFPINbyTAP_color"  value="<?php echo wp_filter_nohtml_kses( $value ); ?>" /><span class="description"><?php echo $optiondescription; ?></span></label>
+        <input type="text" id="<?php echo $fieldid ?>" name="<?php echo $fieldname; ?>" class="APTFPINbyTAP_color"  value="<?php echo ( $value ); ?>" /><span class="description"><?php echo $optiondescription; ?></span></label>
        
         <div id="<?php echo $fieldid; ?>_picker" class="APTFPINbyTAP_color_picker" ></div>
         <?php
@@ -645,7 +644,7 @@
       else if ( 'text' == $fieldtype ) {
         ?>
         <div class="title"><label for="<?php echo $fieldid; ?>"><?php echo $optiontitle ?></label></div>
-        <input type="text" id="<?php echo $fieldid ?>" name="<?php echo $fieldname; ?>" value="<?php echo wp_filter_nohtml_kses( $value ); ?>" />
+        <input type="text" id="<?php echo $fieldid ?>" name="<?php echo $fieldname; ?>" value="<?php echo ( $value ); ?>" />
         <span class="description"><?php echo $optiondescription; ?></span>
         <?php
       } 
@@ -661,7 +660,7 @@
         ?>
         
         <div class="title"><label for="<?php echo $fieldid; ?>"><?php echo $optiontitle ?></label></div>
-        <input type="text" id="<?php echo $fieldid ?>" name="<?php echo $fieldname; ?>" class="APTFPINbyTAP_color"  value="<?php echo wp_filter_nohtml_kses( $value ); ?>" /><span class="description"><?php echo $optiondescription; ?></span></label>
+        <input type="text" id="<?php echo $fieldid ?>" name="<?php echo $fieldname; ?>" class="APTFPINbyTAP_color"  value="<?php echo ( $value ); ?>" /><span class="description"><?php echo $optiondescription; ?></span></label>
        
         <div id="<?php echo $fieldid; ?>_picker" class="APTFPINbyTAP_color_picker" ></div>
 
@@ -706,6 +705,9 @@
       }    
       // Validate text input and textarea fields
       else if ( ( 'text' == $optiondetails['type'] || 'textarea' == $optiondetails['type'] || 'image-upload' == $optiondetails['type']) ) {
+      
+        $valid_input = strip_tags( $newinput );
+      
         // Check if numeric
         if ( 'numeric' == $optiondetails['sanitize'] && is_numeric( wp_filter_nohtml_kses( $newinput ) ) ) {
           // Pass input data through the wp_filter_nohtml_kses filter
@@ -761,7 +763,8 @@
         // Validate URL address
         if( 'css' == $optiondetails['sanitize'] ){
           $valid_input = wp_htmledit_pre( stripslashes( $newinput ) );
-        }      
+        }
+        
       }else if( 'wp-textarea' == $optiondetails['type'] ){
           // Text area filter
           $valid_input = wp_kses_post( force_balance_tags($newinput) );

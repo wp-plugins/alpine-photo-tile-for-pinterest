@@ -18,7 +18,8 @@ function APTFPINbyTAP_photo_retrieval($id, $pinterest_options, $defaults){
 
   $key = 'pinterest-'.$pinterest_options['pinterest_source'].'-'.$APTFPINbyTAP_pinterest_uid.'-'.$APTFPINbyTAP_pinterest_board.'-link-'.$pinterest_options['pinterest_display_link'].'-'.$pinterest_options['pinterest_display_link_style'].'-'.$pinterest_options['pinterest_photo_number'].'-'.$pinterest_options['pinterest_photo_size'];
 
-  if ( class_exists( 'theAlpinePressSimpleCacheV2' ) && APTFPINbyTAP_CACHE ) {
+  $disablecache = APTFPINbyTAP_get_option( 'cache_disable' );
+  if ( class_exists( 'theAlpinePressSimpleCacheV2' ) && APTFPINbyTAP_CACHE && !$disablecache ) {
     $cache = new theAlpinePressSimpleCacheV2();  
     $cache->setCacheDir( APTFPINbyTAP_CACHE );
     
@@ -309,10 +310,15 @@ function APTFPINbyTAP_photo_retrieval($id, $pinterest_options, $defaults){
     
   $results = array('continue'=>$continue,'message'=>$message,'hidden'=>$hidden,'user_link'=>$APTFPINbyTAP_user_link,'image_captions'=>$APTFPINbyTAP_photocap,'image_urls'=>$APTFPINbyTAP_photourl,'image_perms'=>$APTFPINbyTAP_linkurl,'image_originals'=>$APTFPINbyTAP_originalurl);
   
-  if( true == $continue ){     
+  if( true == $continue  && !$disablecache && $cache ){     
     $cache_results = $results;
     if(!is_serialized( $cache_results  )) { $cache_results  = maybe_serialize( $cache_results ); }
+    
     $cache->put($key, $cache_results);
+    $cachetime = APTFPINbyTAP_get_option( 'cache_time' );
+    if( $cachetime && is_numeric($cachetime) ){
+      $cache->setExpiryInterval( $cachetime*60*60 );
+    }
   }
   
   return $results;

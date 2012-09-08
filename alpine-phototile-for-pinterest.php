@@ -3,7 +3,7 @@
 Plugin Name: Alpine PhotoTile for Pinterest
 Plugin URI: http://thealpinepress.com/alpine-phototile-for-pinterest/
 Description: The Alpine PhotoTile for Pinterest is one plugin in a series that creates a way of retrieving photos from various popular sites and displaying them in a stylish and uniform way. The plugin is capable of retrieving photos from a particular Pinterest user or board. This lightweight but powerful widget takes advantage of WordPress's built in JQuery scripts to create a sleek presentation that I hope you will like.
-Version: 1.1.1
+Version: 1.1.1.4
 Author: the Alpine Press
 Author URI: http://thealpinepress.com/
 License: GNU General Public License v3.0
@@ -33,7 +33,7 @@ if ( ! defined( 'WP_PLUGIN_DIR' ) )
 define( 'APTFPINbyTAP_URL', WP_PLUGIN_URL.'/'. basename(dirname(__FILE__)) . '' );
 define( 'APTFPINbyTAP_DIR', WP_PLUGIN_DIR.'/'. basename(dirname(__FILE__)) . '' );
 define( 'APTFPINbyTAP_CACHE', WP_CONTENT_DIR . '/cache/' . basename(dirname(__FILE__)) . '' );
-define( 'APTFPINbyTAP_VER', '1.1.1' );
+define( 'APTFPINbyTAP_VER', '1.1.1.4' );
 define( 'APTFPINbyTAP_DOMAIN', 'APTFPINbyTAP_domain' );
 define( 'APTFPINbyTAP_HOOK', 'APTFPINbyTAP_hook' );
 define( 'APTFPINbyTAP_SETTINGS', basename(dirname(__FILE__)).'-settings' );
