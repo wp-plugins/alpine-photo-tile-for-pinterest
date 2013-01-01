@@ -1,25 +1,31 @@
 /*
  * Alpine PhotoTile for Pinterest: jQuery Tile Display Functions
  * By: Eric Burger, http://thealpinepress.com
- * Version: 1.0.0
- * Updated: August  2012
+ * Version: 1.0.1
+ * Updated: December  2012
  * 
  */
 
-(function( w, s ) {
-  s.fn.APTFPINbyTAPTilesPlugin = function( options ) {
+(function( w, s, d ) {
+  s.fn.AlpinePhotoTilesPlugin = function( options ) {
   
-    options = s.extend( {}, s.fn.APTFPINbyTAPTilesPlugin.options, options );
+    options = s.extend( {}, s.fn.AlpinePhotoTilesPlugin.options, options );
   
+    // IE 7 fallback
+    if(s.browser.msie && !d.querySelector){
+      if('windows' != options.style){
+        options.style = 'rift';
+      }
+    }
     return this.each(function() {  
       var parent = s(this);
-      var imageList = s(".APTFPINbyTAP_image_list_class",parent);
-      var images = s('.APTFPINbyTAP-image',imageList);
-      var allPerms = s('.APTFPINbyTAP-link',imageList);
+      var imageList = s(".AlpinePhotoTiles_image_list_class",parent);
+      var images = s('.AlpinePhotoTiles-image',imageList);
+      var allPerms = s('.AlpinePhotoTiles-link',imageList);
       var width = parent.width();
 
       var currentRow,img,newDiv,newDivContainer,src,url,height,theClasses,theHeight,theWidth,perm;
-      
+     
       if( 'square' == options.shape && 'windows' == options.style ){
         s.each(images, function(i){
           img = this;
@@ -29,23 +35,23 @@
           
           if(i%3 == 0){
             
-            theClasses = "APTFPINbyTAP-tile";
+            theClasses = "AlpinePhotoTiles-tile";
             theWidth = (width-8);
             theHeight = theWidth;
-            newRow( theHeight );
+            newRow( theHeight, i );
             addDiv(i);
             
           }else if(i%3 == 1){
 
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile APTFPINbyTAP-half-tile-first";
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile AlpinePhotoTiles-half-tile-first";
             theWidth = (width/2-4-4/2);
             theHeight = theWidth;
-            newRow( theHeight );
+            newRow( theHeight, i );
             addDiv(i);
      
           }else if(i%3 == 2){
         
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile APTFPINbyTAP-half-tile-last";
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile AlpinePhotoTiles-half-tile-last";
             theWidth = (width/2-4-4/2);
             theHeight = theWidth;
             addDiv(i);
@@ -66,9 +72,9 @@
             height = theWidth*img.naturalHeight/img.naturalWidth;
             height = (height?height:width);
             
-            newRow(height);
+            newRow( height, i );
                         
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-tile-rectangle";
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-tile-rectangle";
             theHeight = (height);
 
             addDiv(i);
@@ -77,9 +83,9 @@
             theWidth = (width/2-4-4/2);
             height = theWidth*img.naturalHeight/img.naturalWidth;
             height = (height?height:width);
-            newRow( height );
+            newRow( height, i );
             
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile APTFPINbyTAP-half-tile-first APTFPINbyTAP-tile-rectangle";
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile AlpinePhotoTiles-half-tile-first AlpinePhotoTiles-tile-rectangle";
             theHeight = (height);
             theWidth = (width/2-4-4/2);
             addDiv(i);
@@ -94,7 +100,7 @@
               currentRow.css({'height':height+'px'});
             }
                         
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile APTFPINbyTAP-half-tile-last APTFPINbyTAP-tile-rectangle";
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile AlpinePhotoTiles-half-tile-last AlpinePhotoTiles-tile-rectangle";
             theHeight = (height);
             addDiv(i);
           }
@@ -114,14 +120,14 @@
           perm = allPerms[i];
           
           if(i%options.perRow == 0){
-            newRow(width/options.perRow); 
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile APTFPINbyTAP-half-tile-first";            
+            newRow( width/options.perRow, i ); 
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile AlpinePhotoTiles-half-tile-first";            
             addDiv(i);
           }else if(i%options.perRow == (options.perRow -1) ){
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile APTFPINbyTAP-half-tile-last";
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile AlpinePhotoTiles-half-tile-last";
             addDiv(i);
           }else{    
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile";
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile";
             addDiv(i);
           }
         });
@@ -138,15 +144,18 @@
           url = 'url("'+src+'")';
           perm = allPerms[i];
 
+          var tempW = (img.naturalWidth?img.naturalWidth:width);
+          var tempH = (img.naturalHeight?img.naturalHeight:width);
+          
           currentImage = {
-            "width":img.naturalWidth,
-            "height":img.naturalHeight,
+            "width":tempW,
+            "height":tempH,
             "url":url,
             "perm":perm,
             "src":src,
             "img":img
           } 
-          sumWidth += img.naturalWidth;
+          sumWidth += tempW;
           imageRow[imageRow.length] = currentImage;  
           
           if(i%options.perRow == (options.perRow -1) || (images.length-1)==i ){
@@ -154,7 +163,7 @@
               sumWidth += (options.perRow - i%options.perRow -1)*imageRow[imageRow.length-1].width;
             }
             
-            newRow(theHeight);
+            newRow(theHeight , i );
 
             var pos = 0;
             s.each(imageRow,function(j){
@@ -164,7 +173,7 @@
               url = this.url;
               perm = this.perm;
               src = this.src;
-              theClasses = "APTFPINbyTAP-tile";
+              theClasses = "AlpinePhotoTiles-tile";
               theWidth = (normalWidth-4-4/options.perRow);
               addDiv(j);
               
@@ -183,22 +192,25 @@
         parent.css({'width':'100%'});
         width = parent.width();
         var imageRow=[],currentImage,sumWidth=0,maxHeight=0;
-        
+//console.log(width);
         s.each(images, function(i){
           img = this;
           src = img.src;
           url = 'url("'+src+'")';
           perm = allPerms[i];
+
+          var tempW = (img.naturalWidth?img.naturalWidth:width);
+          var tempH = (img.naturalHeight?img.naturalHeight:width);
           
           currentImage = {
-            "width":img.naturalWidth,
-            "height":img.naturalHeight,
+            "width":tempW,
+            "height":tempH,
             "url":url,
             "perm":perm,
             "src":src,
             "img":img
           } 
-          sumWidth += img.naturalWidth;
+          sumWidth += tempW;
           imageRow[imageRow.length] = currentImage;  
           
           if(i%options.perRow == (options.perRow -1) || (images.length-1)==i ){
@@ -206,12 +218,13 @@
               sumWidth += (options.perRow - i%options.perRow -1)*imageRow[imageRow.length-1].width;
             }
             
-            newRow(10);
-            currentRow.addClass('APTFPINbyTAP-bookshelf');
+            newRow( 10, i );
+            currentRow.addClass('AlpinePhotoTiles-bookshelf');
             var pos = 0;
             s.each(imageRow,function(){
               var normalWidth = this.width/sumWidth*width;
               var normalHeight = normalWidth*this.height/this.width;
+            
               if( normalHeight > maxHeight ){
                 maxHeight = normalHeight;
                 currentRow.css({'height':normalHeight+"px"});
@@ -220,7 +233,7 @@
               url = this.url;
               perm = this.perm;
               src = this.src;
-              theClasses = "APTFPINbyTAP-book";
+              theClasses = "AlpinePhotoTiles-book";
               theWidth = (normalWidth-4-4/options.perRow);
               theHeight = normalHeight;
               addDiv(i);
@@ -248,23 +261,26 @@
           url = 'url("'+src+'")';
           perm = allPerms[i];
           
+          var tempW = (img.naturalWidth?img.naturalWidth:width);
+          var tempH = (img.naturalHeight?img.naturalHeight:width);
+          
           currentImage = {
-            "width":img.naturalWidth,
-            "height":img.naturalHeight,
+            "width":tempW,
+            "height":tempH,
             "url":url,
             "perm":perm,
             "src":src,
             "img":img
           } 
-          sumWidth += img.naturalWidth;
+          sumWidth += tempW;
           imageRow[imageRow.length] = currentImage;  
           
           if(i%options.perRow == (options.perRow -1) || (images.length-1)==i ){
             if( (images.length-1)==i ){
               sumWidth += (options.perRow - i%options.perRow -1)*imageRow[imageRow.length-1].width;
             }
-            newRow(10);
-            currentRow.addClass('APTFPINbyTAP-riftline');
+            newRow( 10, i );
+            currentRow.addClass('AlpinePhotoTiles-riftline');
             var pos = 0;
             s.each(imageRow,function(){
               var normalWidth = this.width/sumWidth*width;
@@ -277,7 +293,7 @@
               url = this.url;
               perm = this.perm;
               src = this.src;
-              theClasses = 'APTFPINbyTAP-rift APTFPINbyTAP-float-'+row;
+              theClasses = 'AlpinePhotoTiles-rift AlpinePhotoTiles-float-'+row;
               theWidth = (normalWidth-4-4/options.perRow);
               theHeight = normalHeight;
               addDiv(i);
@@ -297,7 +313,7 @@
       else if( 'gallery' == options.style ){
         parent.css({'width':'100%','opacity':0});
         width = parent.width();
-        var originalImages = s('img.APTFPINbyTAP-original-image',parent);
+        var originalImages = s('img.AlpinePhotoTiles-original-image',parent);
         
         var gallery,galleryContainer,galleryHeight;
         theWidth = (width/options.perRow-4-4/options.perRow);
@@ -310,41 +326,41 @@
           perm = allPerms[i];
           
           if( 0 == i ){
-            galleryHeight = width/options.perRow*3;
+            galleryHeight = width/options.perRow*options.galleryHeight;
             
-            newRow(galleryHeight); 
+            newRow( galleryHeight, i ); 
                  
-            galleryContainer = s('<div class="APTFPINbyTAP-image-div-container APTFPINbyTAP-gallery-container"></div>');
+            galleryContainer = s('<div class="AlpinePhotoTiles-image-div-container AlpinePhotoTiles-gallery-container"></div>');
             galleryContainer.css({
               "height":galleryHeight+"px",
-              "width":(width-8)+"px",
+              "width":(width-8)+"px"
             });
             
             currentRow.append(galleryContainer);
                              
             if(options.imageBorder){
-              galleryContainer.addClass('APTFPINbyTAP-border-div');
+              galleryContainer.addClass('AlpinePhotoTiles-border-div');
               galleryContainer.width( galleryContainer.width()-10 );
               galleryContainer.height( galleryContainer.height()-10 );
             }
             if(options.imageShadow){
-              galleryContainer.addClass('APTFPINbyTAP-shadow-div');
+              galleryContainer.addClass('AlpinePhotoTiles-shadow-div');
             }
             if(options.imageCurve){
-              galleryContainer.addClass('APTFPINbyTAP-curve-div');
+              galleryContainer.addClass('AlpinePhotoTiles-curve-div');
             }
 
           }
                     
           if(i%options.perRow == 0){     
-            newRow(width/options.perRow); 
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile APTFPINbyTAP-half-tile-first";            
+            newRow( width/options.perRow, i ); 
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile AlpinePhotoTiles-half-tile-first";            
             addDiv(i);
           }else if(i%options.perRow == (options.perRow -1) ){           
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile APTFPINbyTAP-half-tile-last";            
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile AlpinePhotoTiles-half-tile-last";            
             addDiv(i);
           }else{
-            theClasses = "APTFPINbyTAP-tile APTFPINbyTAP-half-tile";            
+            theClasses = "AlpinePhotoTiles-tile AlpinePhotoTiles-half-tile";            
             addDiv(i);
           }
           
@@ -355,9 +371,9 @@
             }
           }
 
-          gallery = s('<div id="'+parent.attr('id')+'-image-'+i+'-gallery" class="APTFPINbyTAP-image-div APTFPINbyTAP-image-gallery"></div>');   
+          gallery = s('<div id="'+parent.attr('id')+'-image-'+i+'-gallery" class="AlpinePhotoTiles-image-div AlpinePhotoTiles-image-gallery"></div>');   
           gallery.css({
-            'background-image':storeUrl,
+            'background-image':storeUrl
           });
           if( 0 != i ){
             gallery.hide();
@@ -366,11 +382,11 @@
           
         });  
 
-        var allThumbs = s('.APTFPINbyTAP-image-div',parent);
-        var allGalleries = s('.APTFPINbyTAP-image-gallery',parent);
+        var allThumbs = s('.AlpinePhotoTiles-image-div',parent);
+        var allGalleries = s('.AlpinePhotoTiles-image-gallery',parent);
         s.each(allThumbs,function(){
           var theThumb = s(this);
-          if( !theThumb.hasClass('APTFPINbyTAP-image-gallery') ){
+          if( !theThumb.hasClass('AlpinePhotoTiles-image-gallery') ){
             theThumb.hover(function() {
               allGalleries.hide();
               s("#"+theThumb.attr('id')+"-gallery").show();
@@ -382,62 +398,90 @@
           parent.css({'opacity':1});
         });
       }
-
-      function newRow(height){
-        currentRow = s('<div class="APTFPINbyTAP-row"></div>');
-        currentRow.css({'height':height+'px'});
-        parent.append(currentRow);
+    
+      if(options.fancybox){
+        s( "a[rel^='fancybox-"+options.id+"']" ).fancybox( { titleShow: false, overlayOpacity: .8, overlayColor: '#000' } );
+      }
+      
+      function newRow(height,i){
+        if(s.browser.msie && !d.querySelector){
+          currentRow = s('<div></div>');
+          currentRow.css({'height':height+'px'});
+          parent.append(currentRow);
+          
+        }else{
+          currentRow = s('<div class="AlpinePhotoTiles-row"></div>');
+          currentRow.css({'height':height+'px'});
+          parent.append(currentRow);
+        }  
       }
       function addDiv(i){
-        newDiv = s('<div id="'+parent.attr('id')+'-image-'+i+'" class="APTFPINbyTAP-image-div"></div>');   
-        newDiv.css({
-          'background-image':url,
-        });
-            
-        newDivContainer = s('<div class="APTFPINbyTAP-image-div-container '+theClasses+'"></div>');
-        newDivContainer.css({
-          "height":theHeight+"px",
-          "width":theWidth+"px",
-        });
+       if(s.browser.msie && !d.querySelector){
+          newDiv = s('<div id="'+parent.attr('id')+'-image-'+i+'" class="AlpinePhotoTiles-image-div" style='+"'"+'background:'+url+' no-repeat center center;'+"'"+'></div>');                
+        }else{
+          newDiv = s('<div id="'+parent.attr('id')+'-image-'+i+'" class="AlpinePhotoTiles-image-div"></div>');   
+          newDiv.css({
+            'background-image':url
+          });  
+        }
+        
+        newDivContainer = s('<div class="AlpinePhotoTiles-image-div-container '+theClasses+'"></div>');
+        
+        if(s.browser.msie && !d.querySelector){
+          newDivContainer.css({
+            "height":(theHeight*0.99)+"px",
+            "width":(theWidth)+"px",
+            "overflow":"hidden"
+          });
+        }else{
+          newDivContainer.css({
+            "height":theHeight+"px",
+            "width":theWidth+"px"
+          });
+        }
         
         currentRow.append(newDivContainer);
         newDivContainer.append(newDiv);
         
         if(perm){
-          newDiv.wrap('<a href="'+perm.href+'" class="APTFPINbyTAP-link" target="_blank"></a>');
+          if(options.fancybox){
+            newDiv.wrap('<a href="'+perm.href+'" class="AlpinePhotoTiles-link" target="_blank" rel="fancybox-'+options.id+'"></a>');
+          }else{
+            newDiv.wrap('<a href="'+perm.href+'" class="AlpinePhotoTiles-link" target="_blank"></a>');
+          }
         }
         if(options.imageBorder){
-          newDivContainer.addClass('APTFPINbyTAP-border-div');
+          newDivContainer.addClass('AlpinePhotoTiles-border-div');
           newDivContainer.width( newDivContainer.width()-10 );
           newDivContainer.height( newDivContainer.height()-10 );
         }
         if(options.imageHighlight){
           if(!options.imageBorder){
-            newDivContainer.addClass('APTFPINbyTAP-highlight-div');
+            newDivContainer.addClass('AlpinePhotoTiles-highlight-div');
             newDivContainer.width( newDivContainer.width()-4 );
             newDivContainer.height( newDivContainer.height()-4 );
           }
           newDivContainer.hover(function(){
             s(this).css({
-              "background": options.highlight,
+              "background": options.highlight
             });
           },function(){
             s(this).css({
-              "background-color": "#fff",
+              "background-color": "#fff"
             });
           });
         }
         if(options.imageShadow){
-          newDivContainer.addClass('APTFPINbyTAP-shadow-div');
+          newDivContainer.addClass('AlpinePhotoTiles-shadow-div');
         }
         if(options.imageCurve){
-          newDivContainer.addClass('APTFPINbyTAP-curve-div');
+          newDivContainer.addClass('AlpinePhotoTiles-curve-div');
         }
         if(options.pinIt){
           var media = s(img).attr('data-original');
           media = (media?media:src);
-          newDiv.addClass('APTFPINbyTAP-pin-container');
-          var link = s('<div class="APTFPINbyTAP-pin-it small"><a href="http://pinterest.com/pin/create/button/?media='+media+'&url='+(options.siteURL)+'" class="pin-it-button" count-layout="horizontal" target="_blank"></a></div>');
+          newDiv.addClass('AlpinePhotoTiles-pinterest-container');
+          var link = s('<div class="AlpinePhotoTiles-pin-it small"><a href="http://pinterest.com/pin/create/button/?media='+media+'&url='+(options.siteURL)+'" class="pin-it-button" count-layout="horizontal" target="_blank"></a></div>');
           newDiv.append(link);
         }
       }
@@ -452,15 +496,16 @@
     });
   }
   
-  s.fn.APTFPINbyTAPTilesPlugin.options = {
-    backgroundClass: 'northbynorth_background',
-    parentID: 'parent'
-  }    
-})( window, jQuery );
+  s.fn.AlpinePhotoTilesPlugin.options = {
+    id: 'AlpinePress',
+    pinIt: false,
+    fancybox:false
+  }
+})( window, jQuery, document );
   
   
 (function( w, s ) {
-  s.fn.APTFPINbyTAPAdjustBordersPlugin = function( options ) {
+  s.fn.AlpineAdjustBordersPlugin = function( options ) {
     return this.each(function() {  
       var parent = s(this);
       var images = s('img',parent);
@@ -470,42 +515,42 @@
         var width = currentImg.parent().width();
         
         // Remove and replace ! important classes
-        if( currentImg.hasClass('APTFPINbyTAP-img-border') ){
+        if( currentImg.hasClass('AlpinePhotoTiles-img-border') ){
           width -= 10;
-          currentImg.removeClass('APTFPINbyTAP-img-border');
+          currentImg.removeClass('AlpinePhotoTiles-img-border');
           currentImg.css({
             'max-width':(width)+'px',
             'padding':'4px',
             "margin-left": "1px",
-            "margin-right": "1px",
+            "margin-right": "1px"
           });
-        }else if( currentImg.hasClass('APTFPINbyTAP-img-noborder') ){
-          currentImg.removeClass('APTFPINbyTAP-img-noborder');
+        }else if( currentImg.hasClass('AlpinePhotoTiles-img-noborder') ){
+          currentImg.removeClass('AlpinePhotoTiles-img-noborder');
           currentImg.css({
             'max-width':(width)+'px',
-            'padding':'0px',
+            'padding':'0px'
           });
         }
         
-        if( currentImg.hasClass('APTFPINbyTAP-img-shadow') ){
+        if( currentImg.hasClass('AlpinePhotoTiles-img-shadow') ){
           width -= 2;
-          currentImg.removeClass('APTFPINbyTAP-img-shadow');
+          currentImg.removeClass('AlpinePhotoTiles-img-shadow');
           currentImg.css({
             "box-shadow": "0 1px 3px rgba(34, 25, 25, 0.4)",
             "margin-left": "1px",
             "margin-right": "1px",
-            'max-width':(width)+'px',
+            'max-width':(width)+'px'
           });
-        }else if( currentImg.hasClass('APTFPINbyTAP-img-noshadow') ){
-          currentImg.removeClass('APTFPINbyTAP-img-noshadow');
+        }else if( currentImg.hasClass('AlpinePhotoTiles-img-noshadow') ){
+          currentImg.removeClass('AlpinePhotoTiles-img-noshadow');
           currentImg.css({
             'max-width':(width)+'px',
-            "box-shadow":"none",
+            "box-shadow":"none"
           });
         }
         
-        if( currentImg.hasClass('APTFPINbyTAP-img-highlight') ){
-          currentImg.removeClass('APTFPINbyTAP-img-highlight');
+        if( currentImg.hasClass('AlpinePhotoTiles-img-highlight') ){
+          currentImg.removeClass('AlpinePhotoTiles-img-highlight');
           
           if( '4px' != currentImg.css('padding-right') ){
             width -= 6;
@@ -513,18 +558,17 @@
               'max-width':(width)+'px',
               'padding':'2px',
               "margin-left": "1px",
-              "margin-right": "1px",
+              "margin-right": "1px"
             });
           }
 
           currentImg.hover(function(){
-            console.log(options.highlight);
             s(this).css({
-              "background-color": options.highlight,
+              "background-color": options.highlight
             });
           },function(){
             s(this).css({
-              "background-color": "#fff",
+              "background-color": "#fff"
             });
           });
         }

@@ -1,16 +1,36 @@
 === Alpine PhotoTile for Pinterest ===
 Contributors: theAlpinePress
 Donate link: thealpinepress.com
-Tags: photos, pinterest, photostream, javascript, jQuery, stylish, pictures, images, widget, sidebar, display, gallery, wall
+Tags: photos, pinterest, pins, pinboard, photostream, pictures, widget, sidebar, gallery, lightbox, fancybox
 Requires at least: 2.8
-Tested up to: 3.4.2
-Stable tag: 1.1.1.4
+Tested up to: 3.5
+Stable tag: 1.2.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-== Description == 
-The Alpine PhotoTile for Pinterest is one plugin in a series that creates a way of retrieving photos from various popular sites and displaying them in a stylish and uniform way. The plugin is capable of retrieving photos from a particular Pinterest user or board. This lightweight but powerful widget takes advantage of WordPress's built in JQuery scripts to create a sleek presentation that I hope you will like. A full description and demonstration is available at [the Alpine Press](http://thealpinepress.com/alpine-phototile-for-pinterest/ "Plugin Demo").
+Stylish and compact plugin for displaying Pinterest images in a sidebar, post, or page. 
 
+== Description == 
+The Alpine PhotoTile for Pinterest is capable of retrieving photos from a particular Pinterest user or pin board. The photos can be linked to the your Pinterest page, a specific URL, or to a Fancybox slideshow. Also, the Shortcode Generator makes it easy to insert the widget into posts without learning any of the code. This lightweight but powerful widget takes advantage of WordPress's built in JQuery scripts to create a sleek presentation that I hope you will like. A full description and demonstration is available at [the Alpine Press](http://thealpinepress.com/alpine-phototile-for-pinterest/ "Plugin Demo").
+
+**Features:**
+
+* Display Pinterest images in a sidebar, post, or page
+* Include Pin It button
+* Multiple styles to allow for customization
+* Fancybox/lighbox feature for interactive slideshow
+* Simple instructions
+* Widget & shortcode options
+* Feed caching/storage for improved page loading
+
+**Quick Start Guide**
+
+1. After installing the plugin on your WordPress site, make sure it is activated by logging into your admin area and going to Plugins in the left menu.
+2. To add the plugin to a sidebar, go to Appearance->Widgets in the left menu.
+3. Find the rectangle labeled Alpine PhotoTile for Pinterest. Click and drag the rectangle to one of the sidebar containers on the right.
+4. Once you drop the rectangle in a sidebar area, it should open to reveal a menu of options. The only required information for the plugin to work is a Pinterest ID. Enter this ID and click save in the right bottom corner of the menu.
+5. Open another page/window in your web browser and navigate to your WordPress site to see how the sidebar looks with the Alpine PhotoTile for Pinterest included.
+6. Play around with the various styles and options to find what works best for your site.
 
 == Installation ==
 
@@ -21,7 +41,30 @@ The Alpine PhotoTile for Pinterest is one plugin in a series that creates a way 
 
 == Frequently Asked Questions ==
 
-None yet, but I'd like to hear from you. Leave a message at http://thealpinepress.com/
+**I'm getting the message "Pinterest feed was successfully retrieved, but no photos found". What does that mean?**
+
+This message simply means that while no distinguishable errors occurred, the plugin found your feed to be empty.
+
+**I'm getting the message "Pinterest feed not found. Please recheck your ID". What does that mean?**
+
+This message can mean two things. First, it can indicate that the username or custom url were input incorrectly, causing the feed to fail. In this case, you should try to correct and re-save your IDs.
+
+Second, this message can also mean that the server your WordPress site is being hosted on has prevented the feed from being retrieved. While it is rare, we have encountered web-hosts that disable the feed fetching functions used in the PhotoTile plugin. If this is the case, there is nothing we can do to override or work around the settings on your host server.
+
+**Is there a shortcode function?**
+
+Yes, rather than explaining how to setup the shortcode, I've created a method of generating the shortcode. Check out the Shortcode Generator on the plugin's settings page ( Settings->AlpineTile: Pinterest->Shortcode Generator).
+
+**Why doesn't the widget show my most recent photos?**
+
+The plugin caches or stores the Pinterest feed for three hours. If the new photos have still not appeared after this time, it is possible that Pinterest is responsible for the delay. While Pinterest is fairly prompt about updating photo feeds, periods of high traffic (especially on weekdays between 10am and 4pm) can cause a delay in feed updates.
+
+**Can I show more than 20 photos?**
+
+Sorry but no. Pinterest has not yet released an official api and so the feeds are limited to 20 pins.
+
+If you have any more questions, please leave a message at [the Alpine Press](http://thealpinepress.com/alpine-phototile-for-tumblr/ "Plugin Demo").
+I am a one-man development team and I distribute these plugins for free, so please be patient with me.
 
 
 == Changelog ==
@@ -54,3 +97,15 @@ None yet, but I'd like to hear from you. Leave a message at http://thealpinepres
 * Made option callbacks plugin specific (not global names)
 * Edited style layouts
 * Enqueue JS and CSS on pages containing widget or shortcode only
+
+= 1.2.0 =
+* Rebuilt plugin structure into OBJECT
+* Combined all Alpine Photo Tiles scripts and styles into identical files
+* Improved IE 7 compatibility
+* Added custom image link options
+* Added Fancybox jQuery option
+* Fixed galleryHeight bug
+
+= 1.2.1 =
+* Rebuilt admin div structure
+* Fixed admin css issues

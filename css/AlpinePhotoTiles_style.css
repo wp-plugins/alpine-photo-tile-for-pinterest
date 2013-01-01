@@ -1,15 +1,23 @@
+/**
+ * Alpine PhotoTile Widget CSS
+ *
+ * @since 0.0.1
+ * @updated 1.2.1
+ */
+ 
 /* The style of the Display Link below the images */
 /* Global styles for the container and parent class */
-.APTFPINbyTAP_container_class{
+.AlpinePhotoTiles_container_class{
   position:relative;
   width:100%;
   display:block;
+  overflow:hidden;
 }
-.APTFPINbyTAP_container_class img{
+.AlpinePhotoTiles_container_class img{
   margin:0;
   margin-bottom: 4px;
 }
-.APTFPINbyTAP_container_class.loading{
+.AlpinePhotoTiles_container_class.loading{
   min-height:200px;
   width:100%;
   background-image:url("images/loader.gif");
@@ -17,30 +25,31 @@
   background-repeat:no-repeat;
   background-size:40px 40px;
   background-color:#fff;
+  border-radius: 3px 3px 3px 3px;
 }
-.APTFPINbyTAP_inpost_container {
-  padding:5px 0 10px 0;
+.AlpinePhotoTiles_inpost_container {
+  padding-bottom:10px;
   display:block;
   clear:both;
   width:100%;
   overflow:hidden;
 }
 
-img.APTFPINbyTAP-img-corners{
+img.AlpinePhotoTiles-img-corners{
   border-radius: 3px 3px 3px 3px ! important;
 }
-img.APTFPINbyTAP-img-nocorners{
+img.AlpinePhotoTiles-img-nocorners{
   border-radius: 0 0 0 0 ! important;
 }
 
-.APTFPINbyTAP_cascade_column{
+.AlpinePhotoTiles_cascade_column{
   margin:0;
   padding:0;
   max-width:100%;
   float:left;
 }
 
-.APTFPINbyTAP_breakline{
+.AlpinePhotoTiles_breakline{
   width:100%;
   float:left;
   position:relative;
@@ -49,7 +58,7 @@ img.APTFPINbyTAP-img-nocorners{
 }
 
 
-.APTFPINbyTAP_parent_class{
+.AlpinePhotoTiles_parent_class{
   position:relative;
   max-width:100%;
   clear:both;
@@ -59,14 +68,15 @@ img.APTFPINbyTAP-img-nocorners{
 }
 
 
-.APTFPINbyTAP-row{
+.AlpinePhotoTiles-row{
+  max-width:100%;
   position:relative;
   padding: 0 0 4px 0;
   clear:both;
   display:block;
   height:auto;
 }
-.APTFPINbyTAP-tile{
+.AlpinePhotoTiles-tile{
   display:block;
   background-size:cover;
   background-repeat:no-repeat;
@@ -74,102 +84,102 @@ img.APTFPINbyTAP-img-nocorners{
   margin:0 0 0 4px;
   float:left;
 }
-.APTFPINbyTAP-half-tile{
+.AlpinePhotoTiles-half-tile{
   
 }
-.APTFPINbyTAP-half-tile-first{
+.AlpinePhotoTiles-half-tile-first{
 
 }
-.APTFPINbyTAP-half-tile-last{
+.AlpinePhotoTiles-half-tile-last{
 
 }
 
-.APTFPINbyTAP-bookshelf{
+.AlpinePhotoTiles-bookshelf{
   padding: 5px 0;
 }
-.APTFPINbyTAP-book{
+.AlpinePhotoTiles-book{
   position:absolute;
   bottom:5px;
   margin:0 0 0 4px;
 }
 
-.APTFPINbyTAP-riftline{
+.AlpinePhotoTiles-riftline{
   padding: 0 0 5px 0;
 }
-.APTFPINbyTAP-rift{
+.AlpinePhotoTiles-rift{
   position:absolute;
   bottom:5px;
   margin:0 0 0 4px;
 }
-.APTFPINbyTAP-rift.APTFPINbyTAP-float-0{
+.AlpinePhotoTiles-rift.AlpinePhotoTiles-float-0{
   top:0px;
 }
-.APTFPINbyTAP-rift.APTFPINbyTAP-float-1{
+.AlpinePhotoTiles-rift.AlpinePhotoTiles-float-1{
   bottom:5px;
 }
 
 
-.APTFPINbyTAP-image-div-container{
+.AlpinePhotoTiles-image-div-container{
   overflow:hidden;
 }
-.APTFPINbyTAP-gallery-container{
+.AlpinePhotoTiles-gallery-container{
   margin:0 0 0 4px;
 }
 
-.APTFPINbyTAP-image-div{
+.AlpinePhotoTiles-image-div{
   display:block;
   background-size:cover;
   background-repeat:no-repeat;
   background-position:center;
   width:100%;
   height:100%;
-  position:relative;
 }
-.APTFPINbyTAP-link{
+.AlpinePhotoTiles-link{
   width:100%;
   height:100%;
   display:block;
 }
-.APTFPINbyTAP-border-div{
+.AlpinePhotoTiles-border-div{
   background: none repeat scroll 0 0 #FFFFFF;
   padding:5px;
 }
-.APTFPINbyTAP-highlight-div{
+.AlpinePhotoTiles-highlight-div{
   background: none repeat scroll 0 0 #FFFFFF;
   padding:2px;
 }
-.APTFPINbyTAP-shadow-div{
+
+
+.AlpinePhotoTiles-shadow-div{
   box-shadow: 1px 1px 3px rgba(34, 25, 25, 0.4);
 }
-.APTFPINbyTAP-curve-div{
+.AlpinePhotoTiles-curve-div{
   border-radius: 3px 3px 3px 3px;
 }
 
 
-.APTFPINbyTAP-display-link{
+.AlpinePhotoTiles-display-link{
   width:100%;
   text-align:center;
   /*font-size:10px; */
   margin:3px 0 3px 0;
   position:relative;
 }
-.APTFPINbyTAP-image-link{
+.AlpinePhotoTiles-image-link{
   margin:0px;
   border:0px;
   padding:3px 0 3px 0;
 }
-.APTFPINbyTAP-display-link-container{
+.AlpinePhotoTiles-display-link-container{
   position:relative;
   clear:both;
   display:block;
   width:100%;
-  text-align:center;
 }
 
 
 
 /* Styles specific to the images of each display style */
-.APTFPINbyTAP-vertical-img{
+.AlpinePhotoTiles-vertical-img{
   position:relative;
   width:100%;
   margin:4px 0 0 0;
@@ -177,11 +187,11 @@ img.APTFPINbyTAP-img-nocorners{
   border:0;
   outline:0;  
 }
-.APTFPINbyTAP-vertical-link{
+.AlpinePhotoTiles-vertical-link{
   line-height:0;
   display:block;
 }
-.APTFPINbyTAP-tile-img{
+.AlpinePhotoTiles-tile-img{
   width:100%;
   margin:0;
   padding:0;
@@ -190,8 +200,8 @@ img.APTFPINbyTAP-img-nocorners{
 }
 
 
-/* Style for the little corner link to TAP*/
-.APTFPINbyTAP-by-link{
+/* Style for the little corner link to ETH & KU */
+.AlpinePhotoTiles-by-link{
   position:absolute;
   bottom:0px;
   left:5px;
@@ -203,7 +213,7 @@ img.APTFPINbyTAP-img-nocorners{
   font-size:12px;
   z-index:100;
 }
-.APTFPINbyTAP-by-link a{
+.AlpinePhotoTiles-by-link a{
   font-size:8px;
   line-height:8px;
   opacity:0.9;
@@ -211,19 +221,20 @@ img.APTFPINbyTAP-img-nocorners{
   COLOR:#C0C0C0;
   text-decoration:none;
 }
-.APTFPINbyTAP-pinterest-container{
+
+.AlpinePhotoTiles-pinterest-container{
   position:relative;
   display:block;
 }
-.pin-it-button{
+.AlpinePhotoTiles-pin-it-button{
   display:block;
   width:100%;
   height:100%;
 }
-.APTFPINbyTAP-pinterest-container:hover .APTFPINbyTAP-pin-it, .APTFPINbyTAP-pin-container:hover .APTFPINbyTAP-pin-it{
+.AlpinePhotoTiles-pinterest-container:hover .AlpinePhotoTiles-pin-it {
   opacity:1;
 }
-.APTFPINbyTAP-pin-it{
+.AlpinePhotoTiles-pin-it{
   background-image: url('images/pin-it.png');
   width:43px;
   height:21px;
@@ -237,11 +248,11 @@ img.APTFPINbyTAP-img-nocorners{
   right:15px;
   opacity:0;
 }
-.APTFPINbyTAP-pin-it.small{
+.AlpinePhotoTiles-pin-it.small{
   bottom:5px;
   right:7px;
 }
-.APTFPINbyTAP-pin-it:hover{
+.AlpinePhotoTiles-pin-it:hover{
   background-color:rgba(34, 25, 25, 0.6);
   box-shadow: 0 0 3px rgba(34, 25, 25, 0.6);
 }
