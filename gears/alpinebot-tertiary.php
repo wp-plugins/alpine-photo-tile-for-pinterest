@@ -69,7 +69,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBasic{
     /// If nothing found, try using xml and rss_200 ///
     ///////////////////////////////////////////////////
 
-    if ( !function_exists('simplexml_load_file') ) {
+    if ( function_exists('simplexml_load_file') ) {
       $pinterest_uid = apply_filters( $this->hook, empty($pinterest_options['pinterest_user_id']) ? '' : $pinterest_options['pinterest_user_id'], $pinterest_options );
       switch ($pinterest_options['pinterest_source']) {
         case 'user':
@@ -126,21 +126,21 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBasic{
             if( $pinterest_options['pinterest_display_link'] ) {
               $linkStyle = $pinterest_options['pinterest_display_link_style'];
               if ($linkStyle == 'large') { 
-                $user_link .= '<a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
+                $user_link .= '<div class="AlpinePhotoTiles-display-link" ><a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
                 $user_link .= '<img src="http://passets-cdn.pinterest.com/images/follow-on-pinterest-button.png" alt="Follow Me on Pinterest" border="0" class="AlpinePhotoTiles-image-link"/>';
-                $user_link .= '</a>';
+                $user_link .= '</a></div>';
               } elseif ($linkStyle == 'medium') { 
-                $user_link .= '<a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
+                $user_link .= '<div class="AlpinePhotoTiles-display-link" ><a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
                 $user_link .= '<img src="http://passets-cdn.pinterest.com/images/pinterest-button.png" alt="Follow Me on Pinterest" border="0" class="AlpinePhotoTiles-image-link" />';
-                $user_link .= '</a>';
+                $user_link .= '</a></div>';
               } elseif ($linkStyle == 'small') { 
-                $user_link .= '<a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
+                $user_link .= '<div class="AlpinePhotoTiles-display-link" ><a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
                 $user_link .= '<img src="http://passets-cdn.pinterest.com/images/big-p-button.png" width="61" height="61" alt="Follow Me on Pinterest" border="0" class="AlpinePhotoTiles-image-link" />';
-                $user_link .= '</a>';
+                $user_link .= '</a></div>';
               } elseif ($linkStyle == 'tiny') { 
-                $user_link .= '<a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest" >';
+                $user_link .= '<div class="AlpinePhotoTiles-display-link" ><a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest" >';
                 $user_link .= '<img src="http://passets-cdn.pinterest.com/images/small-p-button.png" width="16" height="16" alt="Follow Me on Pinterest" border="0" class="AlpinePhotoTiles-image-link"/>';
-                $user_link .= '</a>';
+                $user_link .= '</a></div>';
               } elseif ($linkStyle == 'text') {
                 $user_link .= '<div class="AlpinePhotoTiles-display-link" >';
                 $user_link .= '<a href="http://pinterest.com/'.$pinterest_uid.'/" target="_blank" >';
@@ -259,21 +259,21 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBasic{
             if( $pinterest_options['pinterest_display_link'] ) {
               $linkStyle = $pinterest_options['pinterest_display_link_style'];
               if ($linkStyle == 'large') { 
-                $user_link .= '<a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
+                $user_link .= '<div class="AlpinePhotoTiles-display-link" ><a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
                 $user_link .= '<img src="http://passets-cdn.pinterest.com/images/follow-on-pinterest-button.png" alt="Follow Me on Pinterest" border="0" class="AlpinePhotoTiles-image-link"/>';
-                $user_link .= '</a>';
+                $user_link .= '</a></div>';
               } elseif ($linkStyle == 'medium') { 
-                $user_link .= '<a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
+                $user_link .= '<div class="AlpinePhotoTiles-display-link" ><a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
                 $user_link .= '<img src="http://passets-cdn.pinterest.com/images/pinterest-button.png" alt="Follow Me on Pinterest" border="0" class="AlpinePhotoTiles-image-link" />';
-                $user_link .= '</a>';
+                $user_link .= '</a></div>';
               } elseif ($linkStyle == 'small') { 
-                $user_link .= '<a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
+                $user_link .= '<div class="AlpinePhotoTiles-display-link" ><a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest">';
                 $user_link .= '<img src="http://passets-cdn.pinterest.com/images/big-p-button.png" width="61" height="61" alt="Follow Me on Pinterest" border="0" class="AlpinePhotoTiles-image-link" />';
-                $user_link .= '</a>';
+                $user_link .= '</a></div>';
               } elseif ($linkStyle == 'tiny') { 
-                $user_link .= '<a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest" >';
+                $user_link .= '<div class="AlpinePhotoTiles-display-link" ><a href="http://pinterest.com/'. $pinterest_uid .'/" target="_blank" title="Follow Me on Pinterest" >';
                 $user_link .= '<img src="http://passets-cdn.pinterest.com/images/small-p-button.png" width="16" height="16" alt="Follow Me on Pinterest" border="0" class="AlpinePhotoTiles-image-link"/>';
-                $user_link .= '</a>';
+                $user_link .= '</a></div>';
               } elseif ($linkStyle == 'text') {
                 $user_link .= '<div class="AlpinePhotoTiles-display-link" >';
                 $user_link .= '<a href="http://pinterest.com/'.$pinterest_uid.'/" target="_blank" >';
