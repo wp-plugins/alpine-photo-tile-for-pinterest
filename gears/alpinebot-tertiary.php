@@ -417,7 +417,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBasic{
            jQuery(window).load(function() {
               if(jQuery().AlpineAdjustBordersPlugin ){
                 jQuery("#'.$id.'-vertical-parent").AlpineAdjustBordersPlugin({
-                  highlight:"'.$highlight.'",
+                  highlight:"'.$highlight.'"
                 });
               }  
             });
@@ -538,7 +538,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBasic{
            jQuery(window).load(function() {
               if(jQuery().AlpineAdjustBordersPlugin ){
                 jQuery("#'.$id.'-cascade-parent").AlpineAdjustBordersPlugin({
-                  highlight:"'.$highlight.'",
+                  highlight:"'.$highlight.'"
                 });
               }  
             });
