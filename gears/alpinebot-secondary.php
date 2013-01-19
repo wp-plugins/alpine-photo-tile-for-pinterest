@@ -78,6 +78,7 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
  *  Create array of positions for a given tab along with a list of settings for each position
  *  
  *  @ Since 1.2.0
+ *  @ Updated 1.2.3
  */
   function get_option_positions_by_tab( $tab = 'generator' ){
     $positions = $this->option_positions();
@@ -86,8 +87,9 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
       $options = $this->get_options_by_tab( $tab );
       $defaults = $this->option_defaults();
       
-      foreach($positions[$tab] as $pos => $title ){
-        $return[$pos]['title'] = $title;
+      foreach($positions[$tab] as $pos => $info ){
+        $return[$pos]['title'] = $info['title'];
+        $return[$pos]['description'] = $info['description'];
         $return[$pos]['options'] = array();
       }
       foreach($options as $name){
@@ -117,6 +119,86 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
     }
     return $return; 
   }
+  
+/**
+ * Register styles and scripts
+ *  
+ * @ Since 1.2.3
+ *
+ */
+  function register_style_and_script(){
+    wp_register_script($this->wjs,$this->url.'/js/'.$this->wjs.'.js','',$this->ver);
+    wp_register_style($this->wcss,$this->url.'/css/'.$this->wcss.'.css','',$this->ver);  
+   
+    $lightbox = $this->get_option('general_lightbox');
+    $prevent = $this->get_option('general_lightbox_no_load');
+    
+    if( 'fancybox' == $lightbox && !$prevent ){
+      wp_register_script( 'fancybox', $this->url.'/js/fancybox/jquery.fancybox-1.3.4.pack.js', '', '1.3.4', true );
+      wp_register_style( 'fancybox-stylesheet', $this->url . '/js/fancybox/jquery.fancybox-1.3.4.css', false, '1.3.4', 'screen' );		
+    }elseif( 'prettyphoto' == $lightbox && !$prevent ){
+      wp_register_script( 'prettyphoto', $this->url.'/js/prettyphoto/js/jquery.prettyPhoto.js', '', '3.1.4', true );
+      wp_register_style( 'prettyphoto-stylesheet', $this->url . '/js/prettyphoto/css/prettyPhoto.css', false, '3.1.4', 'screen' );		
+    }elseif( 'colorbox' == $lightbox && !$prevent ){
+      wp_register_script( 'colorbox', $this->url.'/js/colorbox/jquery.colorbox-min.js', '', '1.3.21', true );
+      wp_register_style( 'colorbox-stylesheet', $this->url . '/js/colorbox/colorbox.css', false, '3.1.4', 'screen' );		
+    }elseif( 'alpine-fancybox' == $lightbox ){
+      wp_register_script( 'fancybox-alpine', $this->url.'/js/fancybox-alpine-safemode/jquery.fancyboxForAlpine-1.3.4.pack.js', '', '1.3.4', true );
+      wp_register_style( 'fancybox-alpine-stylesheet', $this->url . '/js/fancybox-alpine-safemode/jquery.fancyboxForAlpine-1.3.4.css', false, '1.3.4', 'screen' );		
+    }
+    
+    // Enable loading the styles and scripts in the header
+    $headerload = $this->get_option('general_load_header');
+    if( $headerload ){
+      if( 'fancybox' == $lightbox && !$prevent ){
+        wp_enqueue_script( 'fancybox' );
+        wp_enqueue_style( 'fancybox-stylesheet');
+      }elseif( 'prettyphoto' == $lightbox && !$prevent ){
+        wp_enqueue_script( 'prettyphoto' );
+        wp_enqueue_style( 'prettyphoto-stylesheet');
+      }elseif( 'colorbox' == $lightbox && !$prevent ){
+        wp_enqueue_script( 'colorbox' );
+        wp_enqueue_style( 'colorbox-stylesheet' );
+      }elseif( 'alpine-fancybox' == $lightbox ){
+        wp_enqueue_script( 'fancybox-alpine' );
+        wp_enqueue_style( 'fancybox-alpine-stylesheet' );		
+      }
+      wp_enqueue_style($this->wcss);
+      wp_enqueue_script($this->wjs);
+    }
+  }
+/**
+ * Enqueue styles and scripts
+ *  
+ * @ Since 1.2.3
+ *
+ */
+  function enqueue_style_and_script(){
+    $headerload = $this->get_option('general_load_header');
+    if( !$headerload ){
+      // Change web source
+      if( $this->options['pinterest_image_link_option'] == "fancybox" ){
+        $lightbox = $this->get_option('general_lightbox');
+        $prevent = $this->get_option('general_lightbox_no_load');
+        if( 'fancybox' == $lightbox && !$prevent ){
+          wp_enqueue_script( 'fancybox' );
+          wp_enqueue_style( 'fancybox-stylesheet');
+        }elseif( 'prettyphoto' == $lightbox && !$prevent ){
+          wp_enqueue_script( 'prettyphoto' );
+          wp_enqueue_style( 'prettyphoto-stylesheet');
+        }elseif( 'colorbox' == $lightbox && !$prevent ){
+          wp_enqueue_script( 'colorbox' );
+          wp_enqueue_style( 'colorbox-stylesheet' );
+        }elseif( 'alpine-fancybox' == $lightbox ){
+          wp_enqueue_script( 'fancybox-alpine' );
+          wp_enqueue_style( 'fancybox-alpine-stylesheet' );		
+        }
+      } 
+      wp_enqueue_style($this->wcss);
+      wp_enqueue_script($this->wjs);
+    }
+  }
+  
 /**
  * Options Simple Update for Admin Page
  *  
@@ -319,8 +401,8 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
 /**
  * Options Validate Pseudo-Callback
  *
- * @since 1.0.0
- *
+ * @ Since 1.0.0
+ * @ Updated 1.2.3
  */
   function MenuOptionsValidate( $newinput, $oldinput, $optiondetails ) {
       $valid_input = $oldinput;
@@ -351,6 +433,37 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
       // Validate text input and textarea fields
       else if ( ( 'text' == $optiondetails['type'] || 'textarea' == $optiondetails['type'] || 'image-upload' == $optiondetails['type']) ) {
         $valid_input = strip_tags( $newinput );
+        
+        // Validate no-HTML content
+        // nospaces option offers additional filters
+        if ( 'nospaces' == $optiondetails['sanitize'] ) {
+          // Pass input data through the wp_filter_nohtml_kses filter
+          $valid_input = wp_filter_nohtml_kses( $newinput );
+          
+          // Remove specified character(s)
+          if(Null !== $optiondetails['remove']){
+            if( is_array($optiondetails['remove']) ){
+              foreach( $optiondetails['remove'] as $remove ){
+                $valid_input = str_replace($remove,'',$valid_input);
+              }
+            }else{
+              $valid_input = str_replace($optiondetails['remove'],'',$valid_input);
+            }
+          }
+          // Switch or encode characters
+          if( is_array( $optiondetails['encode'] ) ){
+            foreach( $optiondetails['encode'] as $find=>$replace ){
+              $valid_input = str_replace($find,$replace,$valid_input);
+            }
+          }
+          // Replace spaces with provided character or just remove spaces
+          if(Null !== $optiondetails['replace']){
+            $valid_input = str_replace(array('  ',' '),$optiondetails['replace'],$valid_input);
+          }else{
+            $valid_input = str_replace(' ','',$valid_input);
+          }
+        }    
+        
         // Check if numeric
         if ( 'numeric' == $optiondetails['sanitize'] && is_numeric( wp_filter_nohtml_kses( $newinput ) ) ) {
           // Pass input data through the wp_filter_nohtml_kses filter
@@ -371,22 +484,7 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
           if( NULL !== $optiondetails['max'] && $valid_input>$optiondetails['max']){
             $valid_input = $optiondetails['max'];
           }
-        }      
-        // Validate no-HTML content
-        if ( 'nospaces' == $optiondetails['sanitize'] ) {
-          // Pass input data through the wp_filter_nohtml_kses filter
-          $valid_input = wp_filter_nohtml_kses( $newinput );
-          
-          if(Null !== $optiondetails['remove']){
-            $valid_input = str_replace($optiondetails['remove'],'',$valid_input);
-          }
-          
-          if(Null !== $optiondetails['replace']){
-            $valid_input = str_replace(array('  ',' '),$optiondetails['replace'],$valid_input);
-          }else{
-            $valid_input = str_replace(' ','',$valid_input);
-          }
-        }           
+        }          
         if ( 'tag' == $optiondetails['sanitize'] ) {
           // Pass input data through the wp_filter_nohtml_kses filter
           $valid_input = wp_filter_nohtml_kses( $newinput );
@@ -426,58 +524,6 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
       return $valid_input;
   }
   
-  
-  
-  /**
-   * Alpine PhotoTile: Options Page
-   *
-   * @since 1.1.1
-   *
-   */
-  function build_settings_page(){
-    $optiondetails = $this->option_defaults();
-    $currenttab = $this->get_current_tab();
-    
-    echo '<div class="wrap AlpinePhotoTiles_settings_wrap">';
-    $this->admin_options_page_tabs( $currenttab );
-
-      echo '<div class="AlpinePhotoTiles-container '.$this->domain.'">';
-      
-      if( 'general' == $currenttab ){
-        $this->display_general();
-      }elseif( 'add' == $currenttab ){
-        $this->display_add();
-      }elseif( 'preview' == $currenttab ){
-        $this->display_preview();
-      }else{
-        $options = $this->get_all_options();     
-        $settings_section = $this->id . '_' . $currenttab . '_tab';
-        $submitted = ( ( isset($_POST[ "hidden" ]) && ($_POST[ "hidden" ]=="Y") ) ? true : false );
-
-        if( $submitted ){
-          $options = $this->SimpleUpdate( $currenttab, $_POST, $options );
-          if( 'generator' == $currenttab ) {
-            $short = $this->generate_shortcode( $options, $optiondetails );
-          }
-        }
-        echo '<div class="AlpinePhotoTiles-'.$currenttab.'">';
-          if( $_POST[$this->settings.'_'.$currenttab]['submit-'.$currenttab] == 'Delete Current Cache' ){
-            $this->clearAllCache();
-            echo '<div class="announcement">'.__("Cache Cleared").'</div>';
-          }
-          elseif( $_POST[$this->settings.'_'.$currenttab]['submit-'.$currenttab] == 'Save Settings' ){
-            $this->clearAllCache();
-            echo '<div class="announcement">'.__("Settings Saved").'</div>';
-          }
-          echo '<form action="" method="post">';
-            echo '<input type="hidden" name="hidden" value="Y">';
-            $this->display_options_form($options,$currenttab,$short);
-          echo '</form>';
-        echo '</div>';
-      }
-      echo '</div>'; // Close Container
-    echo '</div>'; // Close wrap
-  }
 /**
  * Get current settings page tab
  *  
@@ -607,7 +653,8 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
 /**
  * Function for printing options page
  *  
- * @since 1.1.0
+ * @ Since 1.1.0
+ * @ Updated 1.2.3
  *
  */
   function display_options_form($options,$currenttab,$short){
@@ -626,6 +673,7 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
       foreach( $positions as $position=>$positionsinfo){
         echo '<div class="'. $position .'">'; 
           if( $positionsinfo['title'] ){ echo '<h4>'. $positionsinfo['title'].'</h4>'; } 
+          if( $positionsinfo['description'] ){ echo '<div style="margin-bottom:15px;"><span class="description" >'. $positionsinfo['description'].'</span></div>'; } 
           echo '<table class="form-table">';
             echo '<tbody>';
               if( count($positionsinfo['options']) ){
@@ -634,25 +682,30 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
                   $fieldname = ( $option['name'] );
                   $fieldid = ( $option['name'] );
 
-                  if( 'generator' == $currenttab ){
-                    if($option['parent']){
-                      $class = $option['parent'];
-                    }elseif($option['child']){
-                      $class =($option['child']);
-                    }else{
-                      $class = ('unlinked');
-                    }
-                    $trigger = ($option['trigger']?('data-trigger="'.(($option['trigger'])).'"'):'');
-                    $hidden = ($option['hidden']?' '.$option['hidden']:'');
-                    
+                  if( $option['hidden-option'] && $option['check'] ){
+                    $show = $this->get_option( $option['check'] );
+                    if( !$show ){ continue; }
+                  }
+                  
+                  if($option['parent']){
+                    $class = $option['parent'];
+                  }elseif($option['child']){
+                    $class =($option['child']);
+                  }else{
+                    $class = ('unlinked');
+                  }
+                  $trigger = ($option['trigger']?('data-trigger="'.(($option['trigger'])).'"'):'');
+                  $hidden = ($option['hidden']?' '.$option['hidden']:'');
+                  
+                  if( 'generator' == $currenttab ){                  
                     echo '<tr valign="top"> <td class="'.$class.' '.$hidden.'" '.$trigger.'>';
                       $this->MenuDisplayCallback($options,$option,$fieldname,$fieldid);
                     echo '</td></tr>';   
                   }else{
-                    echo '<tr valign="top"><td>';
+                    echo '<tr valign="top"><td class="'.$class.' '.$hidden.'" '.$trigger.'>';
                       $this->AdminDisplayCallback($options,$option,$fieldname,$fieldid);
                     echo '</td></tr>';   
-                  }     
+                  }       
                 }
               }
             echo '</tbody>';
@@ -809,6 +862,59 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
       }
     }
   } 
+  /////////////////////////////////////////////////////////////
+  ///////// Source-specific functions below this line /////////
+  /////////////////////////////////////////////////////////////  
+  /**
+   * Alpine PhotoTile: Options Page
+   *
+   * @since 1.1.1
+   *
+   */
+  function build_settings_page(){
+    $optiondetails = $this->option_defaults();
+    $currenttab = $this->get_current_tab();
+    
+    echo '<div class="wrap AlpinePhotoTiles_settings_wrap">';
+    $this->admin_options_page_tabs( $currenttab );
+
+      echo '<div class="AlpinePhotoTiles-container '.$this->domain.'">';
+      
+      if( 'general' == $currenttab ){
+        $this->display_general();
+      }elseif( 'add' == $currenttab ){
+        $this->display_add();
+      }elseif( 'preview' == $currenttab ){
+        $this->display_preview();
+      }else{
+        $options = $this->get_all_options();     
+        $settings_section = $this->id . '_' . $currenttab . '_tab';
+        $submitted = ( ( isset($_POST[ "hidden" ]) && ($_POST[ "hidden" ]=="Y") ) ? true : false );
+
+        if( $submitted ){
+          $options = $this->SimpleUpdate( $currenttab, $_POST, $options );
+          if( 'generator' == $currenttab ) {
+            $short = $this->generate_shortcode( $options, $optiondetails );
+          }
+        }
+        echo '<div class="AlpinePhotoTiles-'.$currenttab.'">';
+          if( $_POST[$this->settings.'_'.$currenttab]['submit-'.$currenttab] == 'Delete Current Cache' ){
+            $this->clearAllCache();
+            echo '<div class="announcement">'.__("Cache Cleared").'</div>';
+          }
+          elseif( $_POST[$this->settings.'_'.$currenttab]['submit-'.$currenttab] == 'Save Settings' ){
+            $this->clearAllCache();
+            echo '<div class="announcement">'.__("Settings Saved").'</div>';
+          }
+          echo '<form action="" method="post">';
+            echo '<input type="hidden" name="hidden" value="Y">';
+            $this->display_options_form($options,$currenttab,$short);
+          echo '</form>';
+        echo '</div>';
+      }
+      echo '</div>'; // Close Container
+    echo '</div>'; // Close wrap
+  }  
 }
 
 

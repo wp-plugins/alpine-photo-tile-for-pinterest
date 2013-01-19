@@ -1,10 +1,10 @@
 === Alpine PhotoTile for Pinterest ===
 Contributors: theAlpinePress
 Donate link: thealpinepress.com
-Tags: photos, pinterest, pins, pinboard, photostream, pictures, widget, sidebar, gallery, lightbox, fancybox
+Tags: photos, pinterest, pins, pinboard, photostream, pictures, widget, sidebar, gallery, lightbox, fancybox, colorbox, prettybox
 Requires at least: 2.8
 Tested up to: 3.5
-Stable tag: 1.2.1.1
+Stable tag: 1.2.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,7 +63,7 @@ The plugin caches or stores the Pinterest feed for three hours. If the new photo
 
 Sorry but no. Pinterest has not yet released an official api and so the feeds are limited to 20 pins.
 
-If you have any more questions, please leave a message at [the Alpine Press](http://thealpinepress.com/alpine-phototile-for-tumblr/ "Plugin Demo").
+If you have any more questions, please leave a message at [the Alpine Press](http://thealpinepress.com/alpine-phototile-for-pinterest/ "Plugin Demo").
 I am a one-man development team and I distribute these plugins for free, so please be patient with me.
 
 
@@ -109,3 +109,15 @@ I am a one-man development team and I distribute these plugins for free, so plea
 = 1.2.1 =
 * Rebuilt admin div structure
 * Fixed admin css issues
+
+= 1.2.2 =
+* Added aspect ratio options for gallery style
+* Added key generator function
+* Added get_image_url() functions
+* Object oriented id, options, results, and output storage
+* Object oriented display generation
+
+= 1.2.3 =
+* Added FancyboxForAlpine (Fancybox Safemode)
+* Added choice between Fancybox, prettyBox, and ColorBox
+* Added hidden options, including custom rel for lightbox
