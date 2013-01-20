@@ -493,7 +493,7 @@
           var media = s(img).attr('data-original');
           media = (media?media:src);
           newDiv.addClass('AlpinePhotoTiles-pinterest-container');
-          var link = s('<div class="AlpinePhotoTiles-pin-it small"><a href="http://pinterest.com/pin/create/button/?media='+media+'&url='+(options.siteURL)+'" class="pin-it-button" count-layout="horizontal" target="_blank"></a></div>');
+          var link = s('<div class="AlpinePhotoTiles-pin-it small" ><a href="http://pinterest.com/pin/create/button/?media='+media+'&url='+(options.siteURL)+'" class="pin-it-button" count-layout="horizontal" target="_blank" style="height:100%;width:100%;display:block;"></a></div>');
           newDiv.append(link);
         }
       }
