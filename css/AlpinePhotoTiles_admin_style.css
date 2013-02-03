@@ -2,7 +2,7 @@
  * Alpine PhotoTile Admin CSS
  *
  * @since 0.0.1
- * @updated 1.2.1
+ * @updated 1.2.4
  */
   .AlpinePhotoTiles-title{
     width:100%;
@@ -45,12 +45,15 @@
     margin: 0 0 1em 0;
   }
   .AlpinePhotoTiles-container .image-icon{
-    box-shadow: 1px 1px 3px rgba(34, 25, 25, 0.4);
+    box-shadow: 3px 3px 3px rgba(34, 25, 25, 0.6);
     border-radius: 3px 3px 3px 3px;
-    margin: 2px 15px 2px 2px;
+    margin: 4px 12px 12px 4px;
+
   }
   .AlpinePhotoTiles-container .image-icon:hover{
-    box-shadow: 1px 1px 10px rgba(34, 25, 25, 0.4);
+    box-shadow: 7px 7px 3px rgba(34, 25, 25, 0.6);
+    margin: 0px 16px 16px 0px;
+
   }
   .AlpinePhotoTiles-container .help-link{
     width:100%;
@@ -152,7 +155,6 @@
     width:100%;
     text-align:center;
   }  
-
 
   .AlpinePhotoTiles-container .top{
     clear:both;

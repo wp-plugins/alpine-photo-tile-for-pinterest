@@ -4,7 +4,7 @@ Donate link: thealpinepress.com
 Tags: photos, pinterest, pins, pinboard, photostream, pictures, widget, sidebar, gallery, lightbox, fancybox, colorbox, prettybox
 Requires at least: 2.8
 Tested up to: 3.5
-Stable tag: 1.2.3.1
+Stable tag: 1.2.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -124,3 +124,11 @@ I am a one-man development team and I distribute these plugins for free, so plea
 
 = 1.2.3.1 =
 * Fixed cache retrieval
+
+= 1.2.4 =
+* Restructured plugin objects and reassinged functions
+* Object oriented message, hidden, etc.
+* Added option to disable right-clicking on images
+* Added updateGlobalOptions and removed individual option calls
+* Added donate button
+* Fixed lightbox param option

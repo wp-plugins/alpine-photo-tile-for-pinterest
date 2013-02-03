@@ -1,7 +1,67 @@
 <?php
+/**
+ * AlpineBot Seconday
+ * 
+ * Back-end, cache, data-checks, and display functions
+ * Many previos display functions moved here
+ * Contains ONLY universal functions
+ * 
+ */
 
+class PhotoTileForPinterestSecondary extends PhotoTileForPinterestPrimary{  
 
-class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{  
+/**
+ *  Create constants for storing info 
+ *  
+ *  @ Since 1.2.2
+ *  @ Updated 1.2.4
+ */
+   public $out = "";
+   public $options;
+   public $wid; // Widget id
+   public $results;
+   public $shadow;
+   public $border;
+   public $curves;
+   public $highlight;
+   public $rel;
+   
+   public $message = '';
+   public $hidden = '';
+   public $success = false;
+   public $feed_found = false;   
+   public $photos = array();
+   
+   public $userlink = '';
+   
+  
+/**
+ *  Update global (non-widget) options
+ *  
+ *  @ Since 1.2.4
+ * 
+ */
+  function updateGlobalOptions(){
+    $options = $this->get_all_options();
+    $defaults = $this->option_defaults(); 
+    foreach( $defaults as $name=>$info ){
+      if( !$info['widget'] && isset($options[$name]) ){
+        $this->options[$name] = $options[$name];
+      }
+    }
+    // Go ahead and reset info also
+    $this->message = '';
+    $this->hidden = '';
+    $this->success = false;
+    $this->feed_found = false;
+    
+    $this->photos = array();
+    $this->userlink = '';
+  }
+  
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////      Option Functions      /////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 /**
  *  Simple function to get option setting
  *  
@@ -16,13 +76,14 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
  *  Simple function to array of all option settings
  *  
  *  @ Since 1.2.0
+ *  @ Updated 1.2.4
  */
   function get_all_options(){
     $options = get_option( $this->settings );
     $defaults = $this->option_defaults(); 
     foreach( $defaults as $option_string => $details ){
-      if( NULL === $options[$option_string] ){
-        $options[$option_string] = $default_options[$option_string]['default'];
+      if( !isset($options[$option_string]) && !empty($defaults[$option_string]['default']) ){
+        $options[$option_string] = $defaults[$option_string]['default'];
       }
     }
     //update_option( $this->settings, $options ); Unnecessary since options will soon be updated if this fuction was called
@@ -120,6 +181,9 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
     return $return; 
   }
   
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////      Style/Script Functions        /////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////  
 /**
  * Register styles and scripts
  *  
@@ -177,7 +241,7 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
     $headerload = $this->get_option('general_load_header');
     if( !$headerload ){
       // Change web source
-      if( $this->options['pinterest_image_link_option'] == "fancybox" ){
+      if( $this->options[$this->src.'_image_link_option'] == "fancybox" ){
         $lightbox = $this->get_option('general_lightbox');
         $prevent = $this->get_option('general_lightbox_no_load');
         if( 'fancybox' == $lightbox && !$prevent ){
@@ -199,13 +263,16 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
     }
   }
   
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////      Update Functions       ////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 /**
  * Options Simple Update for Admin Page
  *  
  * @since 1.2.0
  *
  */
- function SimpleUpdate( $currenttab, $newoptions, $oldoptions ){
+  function SimpleUpdate( $currenttab, $newoptions, $oldoptions ){
     $options = $this->option_defaults();
     $bytab = $this->get_options_by_tab( $currenttab );
     foreach( $bytab as $id){
@@ -214,6 +281,10 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
     update_option( $this->settings, $oldoptions);
     return $oldoptions;
   }
+  
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////      Menu Display Functions       /////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////  
 /**
   * Function for displaying forms in the widget page
   *
@@ -263,7 +334,7 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
         }
         ?>
         </select>
-        <span class="description"><?php echo $optiondescription; ?></span>
+        <div class="description"><span class="description"><?php echo $optiondescription; ?></span></div>
       <?php
     } // Output select form field markup
     else if ( 'range' == $fieldtype ) {     
@@ -397,7 +468,9 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
     }
   }
 
-
+//////////////////////////////////////////////////////////////////////////////////////
+////////////////////      Input Validation Functions       ///////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 /**
  * Options Validate Pseudo-Callback
  *
@@ -433,7 +506,7 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
       // Validate text input and textarea fields
       else if ( ( 'text' == $optiondetails['type'] || 'textarea' == $optiondetails['type'] || 'image-upload' == $optiondetails['type']) ) {
         $valid_input = strip_tags( $newinput );
-        
+
         // Validate no-HTML content
         // nospaces option offers additional filters
         if ( 'nospaces' == $optiondetails['sanitize'] ) {
@@ -462,8 +535,7 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
           }else{
             $valid_input = str_replace(' ','',$valid_input);
           }
-        }    
-        
+        }
         // Check if numeric
         if ( 'numeric' == $optiondetails['sanitize'] && is_numeric( wp_filter_nohtml_kses( $newinput ) ) ) {
           // Pass input data through the wp_filter_nohtml_kses filter
@@ -484,7 +556,7 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
           if( NULL !== $optiondetails['max'] && $valid_input>$optiondetails['max']){
             $valid_input = $optiondetails['max'];
           }
-        }          
+        }
         if ( 'tag' == $optiondetails['sanitize'] ) {
           // Pass input data through the wp_filter_nohtml_kses filter
           $valid_input = wp_filter_nohtml_kses( $newinput );
@@ -524,6 +596,9 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
       return $valid_input;
   }
   
+//////////////////////////////////////////////////////////////////////////////////////
+///////////////////////      Admin Page Functions       //////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////  
 /**
  * Get current settings page tab
  *  
@@ -594,13 +669,16 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
 /**
  * Function for printing general settings page
  *  
- * @since 1.2.0
- *
+ * @ Since 1.2.0
+ * @ Updated 1.2.4
  */
   function display_general(){ 
     ?>
     <div class="AlpinePhotoTiles-general">
       <h3><?php _e("Thank you for downloading the "); echo $this->name; _e(", a WordPress plugin by the Alpine Press.");?></h3>
+      <?php if( $this->termsofservice ) {
+        echo '<p>'.$this->termsofservice.'</p>';
+      }?>
       <p><?php _e("On the 'Shortcode Generator' tab you will find an easy to use interface that will help you create shortcodes. These shortcodes make it simple to insert the PhotoTile plugin into posts and pages.");?></p>
       <p><?php _e("The 'Plugin Settings' tab provides additional back-end options.");?></p>
       <p><?php _e("Finally, I am a one man programming team and so if you notice any errors or places for improvement, please let me know."); ?></p>
@@ -612,62 +690,103 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
           ?><a href="http://wordpress.org/extend/plugins/alpine-photo-tile-for-<?php echo $each;?>/" target="_blank"><img class="image-icon" src="<?php echo $this->url;?>/css/images/for-<?php echo $each;?>.png" style="width:100px;"></a><?php
         }
       }?>
-
+      <?php $this->donate_button(); ?>
       <div class="help-link"><p><?php _e('Need Help? Visit ') ?><a href="<?php echo $this->info; ?>" target="_blank">the Alpine Press</a><?php _e(' for more about this plugin.') ?></p></div>
       </p>
     </div>
     <?php
   }
 /**
- * Function for printing shortcode preview page
+ * Function displays donation request
  *  
- * @since 1.2.0
+ * @ Since 1.2.4
  *
  */
-  function display_preview(){ 
-    $fieldid = "shortcode-preview";
-    $value = '';
+  function donate_button(){
+    ?>
+    <div>
+      <p>Please support further development of this plugin with a small  <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%40thealpinepress%2ecom&lc=US&item_name=Alpine%20PhotoTile%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" title="Donate">donation</a>. <br>Pocket change is appreciated.</p>
+      <p>
+        <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%40thealpinepress%2ecom&lc=US&item_name=Alpine%20PhotoTile%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" title="Donate">
+        <img class="image-icon" src="<?php echo $this->url;?>/css/images/paypal_donate.png" style="width:150px;">
+        </a>
+      </p>
+    </div>
+    <?php
+  
+  }
+/**
+ * First function for printing options page
+ *  
+ * @ Since 1.1.0
+ * @ Updated 1.2.4
+ *
+ */
+  function setup_options_form($currenttab){
+    $options = $this->get_all_options();     
+    $settings_section = $this->id . '_' . $currenttab . '_tab';
     $submitted = ( ( isset($_POST[ "hidden" ]) && ($_POST[ "hidden" ]=="Y") ) ? true : false );
 
     if( $submitted ){
-      $value = wp_kses_post( str_replace('\"','"', $_POST['shortcode-preview']) );
+      $options = $this->SimpleUpdate( $currenttab, $_POST, $options );
     }
-    ?>
-      <div class="AlpinePhotoTiles-preview" style="border-bottom: 1px solid #DDDDDD;margin-bottom:20px;">
-        <form action="" method="post">
-          <input type="hidden" name="hidden" value="Y">
-          <div>
-          <h4><?php _e('Paste shortcode and click Preview');?></h4>
-          <textarea id="<?php echo $fieldid ?>" name="<?php echo $fieldid; ?>" class="AlpinePhotoTiles_textarea" ><?php echo $value; ?></textarea><br>
-          <span class="description"><?php echo esc_textarea( $optiondescription ); ?></span>
-          <input name="<?php echo $this->settings;?>_preview [submit-preview]" type="submit" class="button-primary" value="Preview" />
-          </div>
-        </form>
-        <br style="clear:both">
-      </div>
-    <?php 
-    
-    echo do_shortcode($value);
-    
+    echo '<div class="AlpinePhotoTiles-'.$currenttab.'">';
+      if( $_POST[$this->settings.'_'.$currenttab]['submit-'.$currenttab] == 'Delete Current Cache' ){
+        $this->clearAllCache();
+        echo '<div class="announcement">'.__("Cache Cleared").'</div>';
+      }
+      elseif( $_POST[$this->settings.'_'.$currenttab]['submit-'.$currenttab] == 'Save Settings' ){
+        $this->clearAllCache();
+        echo '<div class="announcement">'.__("Settings Saved").'</div>';
+      }
+      echo '<form action="" method="post">';
+        echo '<input type="hidden" name="hidden" value="Y">';
+        $this->display_options_form($options,$currenttab);
+      echo '</form>';
+    echo '</div>';
   }
 /**
- * Function for printing options page
+ * Second function for printing options page
  *  
  * @ Since 1.1.0
- * @ Updated 1.2.3.1
+ * @ Updated 1.2.4
  *
  */
-  function display_options_form($options,$currenttab,$short){
+  function display_options_form($options,$currenttab){
 
     $defaults = $this->option_defaults();
     $positions = $this->get_option_positions_by_tab( $currenttab );
+    $submitted = ( ( isset($_POST[ "hidden" ]) && ($_POST[ "hidden" ]=="Y") ) ? true : false );
     
     if( 'generator' == $currenttab ) { 
-      echo '<input name="'. $this->settings.'_'.$currenttab .'[submit-'. $currenttab .']" type="submit" class="button-primary topbutton" value="Generate Shortcode" /><br> ';
-      if($short){
-        echo '<div id="'.$this->settings.'-shortcode" style="position:relative;clear:both;margin-bottom:20px;" ><div class="announcement" style="margin:0 0 10px 0;"> Now, copy (Crtl+C) and paste (Crtl+V) the following shortcode into a page or post. </div>';
-        echo '<div><textarea class="auto_select">'.$short.'</textarea></div></div>';
+      if( $submitted && $_POST['shortcode'] && $_POST[ $this->settings.'_preview']['submit-preview'] == 'Preview' ){
+        $short = str_replace('\"','"',$_POST['shortcode']);
+      }elseif( $submitted ){
+        $short = $this->generate_shortcode( $options, $defaults );
       }
+      if($short){
+        ?>
+        <div id="<?php echo $this->settings;?>-shortcode" style="position:relative;clear:both;margin-bottom:20px;" ><div class="announcement" style="margin:0 0 10px 0;">
+          Now, copy (Crtl+C) and paste (Crtl+V) the following shortcode into a page or post. Or preview using the button below.</div>
+          <div class="AlpinePhotoTiles-preview" style="border-bottom: 1px solid #DDDDDD;">
+            <input type="hidden" name="hidden" value="Y">
+            <textarea id="shortcode" class="auto_select" name="shortcode" style="margin-bottom:20px;"><?php echo $short;?></textarea>
+            <input name="<?php echo $this->settings;?>_preview[submit-preview]" type="submit" class="button-primary" value="Preview" />
+            <br style="clear:both">
+          </div>
+        </div>
+        <?php 
+
+        
+        if( $submitted && $_POST[ $this->settings.'_preview']['submit-preview'] == 'Preview' && $_POST['shortcode'] ){       
+          echo '<div style="border-bottom: 1px solid #DDDDDD;padding-bottom:10px;margin-bottom:40px;">';
+          echo do_shortcode($short);
+          echo '</div>';
+        }
+
+        
+      }
+      echo '<input name="'. $this->settings.'_'.$currenttab .'[submit-'. $currenttab .']" type="submit" class="button-primary topbutton" value="Generate Shortcode" /><br> ';
     }
     if( count($positions) ){
       foreach( $positions as $position=>$positionsinfo){
@@ -725,8 +844,51 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
   }
   
   
-  
-  
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////      Cache Functions       /////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Functions for retrieving results from cache
+ *  
+ * @ Since 1.2.4
+ *
+ */
+  function retrieve_from_cache( $key ){
+    if ( !$this->options['cache_disable'] ) {
+      if( $this->cacheExists($key) ) {
+        $results = $this->getCache($key);
+        $results = @unserialize($results);
+        if( count($results) ){
+          $results['hidden'] .= '<!-- Retrieved from cache -->';
+          $this->results = $results;
+          $this->photos = $results['photos'];
+          if( !empty( $this->photos ) ){
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+/**
+ * Functions for storing results in cache
+ *  
+ * @ Since 1.2.4
+ *
+ */
+  function store_in_cache( $key ){
+    if( $this->success && !$this->options['disable_cache'] ){     
+      $cache_results = $this->results;
+      if(!is_serialized( $cache_results  )) { $cache_results  = @maybe_serialize( $cache_results ); }
+      $this->putCache($key, $cache_results);
+      $cachetime = $this->get_option( 'cache_time' );
+      if( $cachetime && is_numeric($cachetime) ){
+        $this->setExpiryInterval( $cachetime*60*60 );
+      }
+    }
+  }
+
 /**
  * Functions for caching results and clearing cache
  *  
@@ -862,59 +1024,49 @@ class PhotoTileForPinterestBasic extends PhotoTileForPinterestBase{
       }
     }
   } 
-  /////////////////////////////////////////////////////////////
-  ///////// Source-specific functions below this line /////////
-  /////////////////////////////////////////////////////////////  
-  /**
-   * Alpine PhotoTile: Options Page
-   *
-   * @since 1.1.1
-   *
-   */
-  function build_settings_page(){
-    $optiondetails = $this->option_defaults();
-    $currenttab = $this->get_current_tab();
-    
-    echo '<div class="wrap AlpinePhotoTiles_settings_wrap">';
-    $this->admin_options_page_tabs( $currenttab );
-
-      echo '<div class="AlpinePhotoTiles-container '.$this->domain.'">';
-      
-      if( 'general' == $currenttab ){
-        $this->display_general();
-      }elseif( 'add' == $currenttab ){
-        $this->display_add();
-      }elseif( 'preview' == $currenttab ){
-        $this->display_preview();
-      }else{
-        $options = $this->get_all_options();     
-        $settings_section = $this->id . '_' . $currenttab . '_tab';
-        $submitted = ( ( isset($_POST[ "hidden" ]) && ($_POST[ "hidden" ]=="Y") ) ? true : false );
-
-        if( $submitted ){
-          $options = $this->SimpleUpdate( $currenttab, $_POST, $options );
-          if( 'generator' == $currenttab ) {
-            $short = $this->generate_shortcode( $options, $optiondetails );
-          }
-        }
-        echo '<div class="AlpinePhotoTiles-'.$currenttab.'">';
-          if( $_POST[$this->settings.'_'.$currenttab]['submit-'.$currenttab] == 'Delete Current Cache' ){
-            $this->clearAllCache();
-            echo '<div class="announcement">'.__("Cache Cleared").'</div>';
-          }
-          elseif( $_POST[$this->settings.'_'.$currenttab]['submit-'.$currenttab] == 'Save Settings' ){
-            $this->clearAllCache();
-            echo '<div class="announcement">'.__("Settings Saved").'</div>';
-          }
-          echo '<form action="" method="post">';
-            echo '<input type="hidden" name="hidden" value="Y">';
-            $this->display_options_form($options,$currenttab,$short);
-          echo '</form>';
-        echo '</div>';
+  
+//////////////////////////////////////////////////////////////////////////////////////
+///////////////////////      Feed Fetch Functions       //////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+/**
+ *  Function for creating cache key
+ *  
+ *  @ Since 1.2.2
+ */
+  function key_maker( $array ){
+    if( isset($array['name']) && is_array( $array['info'] ) ){
+      $return = $array['name'];
+      foreach( $array['info'] as $key=>$val ){
+        $return = $return."-".($val?$val:$key);
       }
-      echo '</div>'; // Close Container
-    echo '</div>'; // Close wrap
-  }  
+      $return = @ereg_replace('[[:cntrl:]]', '', $return ); // remove ASCII's control characters
+      $bad = array_merge(
+        array_map('chr', range(0,31)),
+        array("<",">",":",'"',"/","\\","|","?","*"," ",",","\'",".")); 
+      $return = str_replace($bad, "", $return); // Remove Windows filename prohibited characters
+      return $return;
+    }
+  }
+/**
+ *  Function for creating cache key
+ *  
+ *  @ Since 1.2.2
+ */
+  function make_display_link(){
+    if( $this->userlink && $this->options[$this->src.'_display_link_text'] && 'community' != $this->options[$this->src.'_source']){
+      $link = $this->userlink;
+      $this->userlink= '<div class="AlpinePhotoTiles-display-link" >';
+      $this->userlink .='<a href="'.$link.'" target="_blank" >';
+      $this->userlink .= $this->options[$this->src.'_display_link_text'];
+      $this->userlink .= '</a></div>';
+    }else{
+      $this->userlink = "";
+    }
+  }
+  
+  
+  
+  
 }
 
 

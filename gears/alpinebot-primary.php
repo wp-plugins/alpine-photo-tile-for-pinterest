@@ -1,22 +1,29 @@
 <?php
-
-
-class PhotoTileForPinterestBase {  
+/**
+ * AlpineBot Primary
+ * 
+ * Holds paramaters and settings specific to this plugin
+ * Some universal functions, but mostly unique
+ * 
+ */
+class PhotoTileForPinterestPrimary {  
 
   /* Set constants for plugin */
   public $url;
   public $dir;
   public $cacheDir;
-  public $ver = '1.2.3';
-  public $vers = '1-2-3';
+  public $ver = '1.2.4';
+  public $vers = '1-2-4';
   public $domain = 'APTFPINbyTAP_domain';
   public $settings = 'alpine-photo-tile-for-pinterest-settings'; // All lowercase
   public $name = 'Alpine PhotoTile for Pinterest';
   public $info = 'http://thealpinepress.com/alpine-phototile-for-pinterest/';
   public $wplink = 'http://wordpress.org/extend/plugins/alpine-photo-tile-for-pinterest/';
   public $page = 'AlpineTile: Pinterest';
+  public $src = 'pinterest';
   public $hook = 'APTFPINbyTAP_hook';
-  public $plugins = array('flickr','tumblr','instagram','picasa-and-google-plus');
+  public $plugins = array('flickr','tumblr','instagram','picasa-and-google-plus','smugmug');
+  public $termsofservice = "";
 
   public $root = 'AlpinePhotoTiles';
   public $wjs = 'AlpinePhotoTiles_script';
@@ -89,10 +96,6 @@ class PhotoTileForPinterestBase {
         'name' => 'generator',
         'title' => 'Shortcode Generator',
       ),
-      'preview' => array(
-        'name' => 'preview',
-        'title' => 'Shortcode Preview',
-      ),
       'plugin-settings' => array(
         'name' => 'plugin-settings',
         'title' => 'Plugin Settings',
@@ -145,7 +148,7 @@ class PhotoTileForPinterestBase {
       'pinterest_user_id' => array(
         'name' => 'pinterest_user_id',
         'short' => 'uid',
-        'title' => 'Pinterest User ID : ',
+        'title' => 'Pinterest Username : ',
         'type' => 'text',
         'sanitize' => 'nospaces',
         'description' => "",
@@ -181,10 +184,6 @@ class PhotoTileForPinterestBase {
           'none' => array(
             'name' => 'none',
             'title' => 'Do not link images'
-          ),
-          'original' => array(
-            'name' => 'original',
-            'title' => 'Link to Image Source'
           ),
           'pinterest' => array(
             'name' => 'pinterest',
@@ -488,11 +487,7 @@ class PhotoTileForPinterestBase {
           '600' => array(
             'name' => 600,
             'title' => '600px'
-          ),
-          '930' => array(
-            'name' => 930,
-            'title' => '930px'
-          )      
+          )   
         ),
         'description' => '',
         'widget' => true,
@@ -579,7 +574,7 @@ class PhotoTileForPinterestBase {
         'sanitize' => 'numeric',
         'min' => '1',
         'max' => '100',
-        'description' => "To reduce the widget width, input a percentage (between 1 and 100). <br> If photos are smaller than widget area, reduce percentage until desired width is achieved.",
+        'description' => "Percentage (%) between 1 and 100.",
         'widget' => true,
         'tab' => 'generator',
         'position' => 'bottom',
@@ -588,7 +583,7 @@ class PhotoTileForPinterestBase {
       'widget_disable_credit_link' => array(
         'name' => 'widget_disable_credit_link',
         'short' => 'nocredit',
-        'title' => 'Disable the tiny "TAP" link in the bottom left corner, though I have spent several months developing this plugin and would appreciate the credit.',
+        'title' => 'Disable the tiny "TAP" link in the bottom left corner, though I would appreciate the credit.',
         'type' => 'checkbox',
         'description' => '',
         'widget' => true,
@@ -596,6 +591,16 @@ class PhotoTileForPinterestBase {
         'position' => 'bottom',
         'default' => ''
       ), 
+      'general_disable_right_click' => array(
+        'name' => 'general_disable_right_click',
+        'title' => 'Disable Right-Click: ',
+        'type' => 'checkbox',
+        'description' => 'Prevent visitors from right-clicking and downloading images.',
+        'since' => '1.2.4',
+        'tab' => 'plugin-settings',
+        'position' => 'top',
+        'default' => ''
+      ),
       'general_loader' => array(
         'name' => 'general_loader',
         'title' => 'Disable Loading Icon: ',
@@ -659,6 +664,7 @@ class PhotoTileForPinterestBase {
         'name' => 'general_lightbox_params',
         'title' => 'Custom Lightbox Parameters:',
         'type' => 'textarea',
+        'sanitize' => 'css',
         'description' => 'Add custom parameters to the lighbox call.',
         'section' => 'settings',
         'tab' => 'general',

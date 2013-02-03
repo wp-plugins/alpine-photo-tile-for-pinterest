@@ -4,7 +4,7 @@
  * Alpine PhotoTile for Pinterest: WP_Widget
  *
  * @ Since 1.1.1
- * @ Updated 1.2.3
+ * @ Updated 1.2.4
  */
  
 class Alpine_PhotoTile_for_Pinterest extends WP_Widget { 
@@ -20,7 +20,7 @@ class Alpine_PhotoTile_for_Pinterest extends WP_Widget {
 /**
  * Widget
  *
- * @ Updated 1.2.3
+ * @ Updated 1.2.4
  */
 	function widget( $args, $options ) {
     $bot = $this->alpinebot;
@@ -29,6 +29,7 @@ class Alpine_PhotoTile_for_Pinterest extends WP_Widget {
     // Set Important Widget Options
     $bot->options = $options;
     $bot->wid = $args["widget_id"];
+    $bot->updateGlobalOptions();
     $bot->photo_retrieval();
     
     $bot->enqueue_style_and_script();
@@ -70,7 +71,7 @@ class Alpine_PhotoTile_for_Pinterest extends WP_Widget {
 /**
  * Form
  *
- * @ Updated 1.2.3
+ * @ Updated 1.2.4
  */
 	function form( $options ) {
     $bot = $this->alpinebot;
@@ -125,7 +126,9 @@ class Alpine_PhotoTile_for_Pinterest extends WP_Widget {
     ?>
     </div> 
     <div><span><?php _e('Need Help? Visit ') ?><a href="<?php echo $bot->info; ?>" target="_blank">the Alpine Press</a> <?php _e('for more about this plugin.') ?></span></div> 
-    <?php
+    
+    <div style="padding-top:10px;"><?php $bot->donate_button();?></div>
+    <?php 
 	}
   
 }

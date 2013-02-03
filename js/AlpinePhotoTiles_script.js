@@ -2,7 +2,7 @@
  * Alpine PhotoTile : jQuery Tile Display Functions
  * By: Eric Burger, http://thealpinepress.com
  * Version: 1.0.2
- * Updated: January  2012
+ * Updated: January  2013
  * 
  */
 
@@ -327,7 +327,6 @@
           
           if( 0 == i ){
             if( options.galleryHeight ){ // Keep for compatibility
-            console.log( options.galleryHeight );
               galleryHeight = width/options.perRow*options.galleryHeight;
             }else if( options.galRatioHeight && options.galRatioWidth ){
               galleryHeight = width*options.galRatioHeight/options.galRatioWidth;
@@ -387,6 +386,11 @@
           }
           galleryContainer.append(gallery);
           
+          // Prevent Right-Click
+          if( img.oncontextmenu ){
+            gallery.attr("oncontextmenu","return false;");
+          }
+          
         });  
 
         var allThumbs = s('.AlpinePhotoTiles-image-div',parent);
@@ -424,13 +428,17 @@
         }  
       }
       function addDiv(i){
-       if(s.browser.msie && !d.querySelector){
+        if(s.browser.msie && !d.querySelector){
           newDiv = s('<div id="'+parent.attr('id')+'-image-'+i+'" class="AlpinePhotoTiles-image-div" style='+"'"+'background:'+url+' no-repeat center center;'+"'"+'></div>');                
         }else{
           newDiv = s('<div id="'+parent.attr('id')+'-image-'+i+'" class="AlpinePhotoTiles-image-div"></div>');   
           newDiv.css({
             'background-image':url
           });  
+        }
+        // Prevent Right-Click
+        if( img.oncontextmenu ){
+          newDiv.attr("oncontextmenu","return false;");
         }
         
         newDivContainer = s('<div class="AlpinePhotoTiles-image-div-container '+theClasses+'"></div>');
@@ -453,7 +461,7 @@
         
         if(perm){
           if(options.lightbox){
-            newDiv.wrap('<a href="'+perm.href+'" class="AlpinePhotoTiles-link AlpinePhotoTiles-lightbox" target="_blank"></a>');
+            newDiv.wrap('<a href="'+perm.href+'" title="'+perm.title+'" alt="'+perm.title+'"  class="AlpinePhotoTiles-link AlpinePhotoTiles-lightbox" target="_blank"></a>');
             s(perm).removeClass( 'AlpinePhotoTiles-lightbox' );
           }else{
             newDiv.wrap('<a href="'+perm.href+'" class="AlpinePhotoTiles-link" target="_blank"></a>');
