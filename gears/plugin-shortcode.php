@@ -3,13 +3,13 @@
  * Alpine PhotoTile for Pinterest: Shortcode
  *
  * @ Since 1.1.1
- * @ Updated 1.2.3
+ * @ Updated 1.2.3.1
  */
  
   function APTFPINbyTAP_shortcode_function( $atts ) {
     $bot = new PhotoTileForPinterestBot();
     
-     $optiondetails = $bot->option_defaults();
+    $optiondetails = $bot->option_defaults();
     $options = array();
     foreach( $optiondetails as $opt=>$details ){
       $options[$opt] = $details['default'];
@@ -21,10 +21,10 @@
     $id = rand(100, 1000);
     $bot->wid = $id;
     $bot->options = $options;
-    $bot->photo_retrieval($id, $options);
+    $bot->photo_retrieval();
     
     $bot->enqueue_style_and_script();
-    
+
     $return .= '<div id="'.$bot->id.'-by-shortcode-'.$id.'" class="AlpinePhotoTiles_inpost_container">';
     $return .= $bot->results['hidden'];
     if( $bot->results['continue'] ){  

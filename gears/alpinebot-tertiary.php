@@ -42,7 +42,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBasic{
  * The PHP for retrieving content from Pinterest.
  *
  * @ Since 1.0.0
- * @ Updated 1.2.2
+ * @ Updated 1.2.3.1
  */
   function photo_retrieval(){
     $pinterest_options = $this->options;
@@ -71,7 +71,8 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBasic{
         $results = @unserialize($results);
         if( count($results) ){
           $results['hidden'] .= '<!-- Retrieved from cache -->';
-          return $results;
+          $this->results = $results; // Remember, Object Oriented
+          return;
         }
       }
     }
@@ -103,6 +104,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBasic{
         $size_id = '.';
       break;
     }    
+
     
     ///////////////////////////////////////////////////
     /// If nothing found, try using xml and rss_200 ///

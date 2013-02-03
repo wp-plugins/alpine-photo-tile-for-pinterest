@@ -16,7 +16,7 @@ class PhotoTileForPinterestBase {
   public $wplink = 'http://wordpress.org/extend/plugins/alpine-photo-tile-for-pinterest/';
   public $page = 'AlpineTile: Pinterest';
   public $hook = 'APTFPINbyTAP_hook';
-  public $plugins = array('flickr','tumblr','instagram');
+  public $plugins = array('flickr','tumblr','instagram','picasa-and-google-plus');
 
   public $root = 'AlpinePhotoTiles';
   public $wjs = 'AlpinePhotoTiles_script';
