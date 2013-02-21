@@ -18,7 +18,7 @@ class PhotoTileForPinterestTertiary extends PhotoTileForPinterestSecondary{
  * The PHP for retrieving content from Pinterest.
  *
  * @ Since 1.0.0
- * @ Updated 1.2.3.1
+ * @ Updated 1.2.4.1
  */
   function photo_retrieval(){
     $pinterest_options = $this->options;
@@ -44,19 +44,19 @@ class PhotoTileForPinterestTertiary extends PhotoTileForPinterestSecondary{
     // Determine image size id
     switch ($pinterest_options['pinterest_photo_size']) {
       case 75:
-        $size_id = '/75/';
+        $size_id = '/75';
       break;
       case 192:
-        $size_id = '/192/';
+        $size_id = '/192';
       break;
       case 554:
-        $size_id = '/550/';
+        $size_id = '/550';
       break;
       case 600:
-        $size_id = '/600/';
+        $size_id = '/600';
       break;
       case 930:
-        $size_id = '/600/';
+        $size_id = '/600';
       break;
     }    
 
@@ -110,8 +110,16 @@ class PhotoTileForPinterestTertiary extends PhotoTileForPinterestSecondary{
                   // . means any expression, and + means repeat previous
                 $photourl_current = @preg_replace(array('/(.*)src="/i','/"(.*)/') , '',$matches[ 0 ]);
                 
-                $the_photo['image_source'] = @str_replace('/192/', $size_id, $photourl_current);
+                // It is unclear what Pinterest's file structure is.  It keeps changing.
+                $the_photo['image_source'] = @str_replace('/192/', $size_id.'/', $photourl_current);
+                if( $size_id == '/75' ){
+                  $the_photo['image_source'] = @str_replace('/192x/', '/75/', $the_photo['image_source']);
+                }else{
+                  $the_photo['image_source'] = @str_replace('/192x/', $size_id.'x/', $the_photo['image_source']);
+                }
+                
                 $the_photo['image_original'] = @str_replace('/192/','/600/', $photourl_current);
+                $the_photo['image_original'] = @str_replace('/192x/','/600x/', $photourl_current);
                 $this->photos[] = $the_photo;
                 // Finally, change the size. [] specifies single character and \w is any word character
                 //$the_photo['image_source'] = @preg_replace('/[_]\w[.]/', $size_id, $photourl_current );
@@ -245,8 +253,17 @@ class PhotoTileForPinterestTertiary extends PhotoTileForPinterestSecondary{
                   $photourl_current = @preg_replace(array('/(.+)src="/i','/"(.+)/') , '',$matches[ 0 ]);
                   // Finally, change the size. 
 
-                  $the_photo['image_source'] = @str_replace('/192/', $size_id, $photourl_current);
+                  // It is unclear what Pinterest's file structure is.  It keeps changing.
+                  $the_photo['image_source'] = @str_replace('/192/', $size_id.'/', $photourl_current);
+                  if( $size_id == '/75' ){
+                    $the_photo['image_source'] = @str_replace('/192x/', '/75/', $the_photo['image_source']);
+                  }else{
+                    $the_photo['image_source'] = @str_replace('/192x/', $size_id.'x/', $the_photo['image_source']);
+                  }
+                  
                   $the_photo['image_original'] = @str_replace('/192/','/600/', $photourl_current);
+                  $the_photo['image_original'] = @str_replace('/192x/','/600x/', $photourl_current);
+
                   $this->photos[] = $the_photo;
                 }
               }
