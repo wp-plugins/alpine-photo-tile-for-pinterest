@@ -81,10 +81,14 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestTertiary{
     $title = $this->photos[$i]['image_title'];
     
     if( $pin ){ $this->out .= '<div class="AlpinePhotoTiles-pinterest-container" style="position:relative;display:block;" >'; }
+    
+    $has_link = $this->get_link($i); // Add link
     $onContextMenu = ($this->options['general_disable_right_click']?'onContextMenu="return false;"':'');
     $this->out .= '<img id="'.$this->wid.'-tile-'.$i.'" class="AlpinePhotoTiles-image '.$this->shadow.' '.$this->border.' '.$this->curves.' '.$this->highlight.'" src="' . $this->photos[$i]['image_source'] . '" ';
     $this->out .= 'title='."'". $title ."'".' alt='."'". $title ."' "; // Careful about caps with ""
     $this->out .= 'border="0" hspace="0" vspace="0" style="'.$css.'" '.$onContextMenu.' />'; // Override the max-width set by theme
+    if( $has_link ){ $this->out .= '</a>'; } // Close link
+    
     if( $pin ){ 
       $this->out .= '<a href="http://pinterest.com/pin/create/button/?media='.$this->photos[$i]['image_original'].'&url='.get_option( 'siteurl' ).'" class="AlpinePhotoTiles-pin-it-button" count-layout="horizontal" target="_blank">';
       $this->out .= '<div class="AlpinePhotoTiles-pin-it"></div></a>';
@@ -227,11 +231,9 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestTertiary{
       $this->out .= '<div id="'.$this->wid.'-vertical-parent" class="AlpinePhotoTiles_parent_class" style="'.$css.'">';
 
         for($i = 0;$i<$opts[$this->src.'_photo_number'];$i++){
-          $has_link = $this->get_link($i);  // Add link
           $css = "margin:1px 0 5px 0;padding:0;max-width:100%;";
           $pin = $this->get_option( 'pinterest_pin_it_button' );
           $this->add_image($i,$css,$pin); // Add image
-          if( $has_link ){ $this->out .= '</a>'; } // Close link
         }
         
         $this->add_credit_link();
@@ -286,11 +288,9 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestTertiary{
           $this->out .= '<div class="AlpinePhotoTiles_cascade_column" style="width:'.(100/$opts['style_column_number']).'%;float:left;margin:0;">';
           $this->out .= '<div class="AlpinePhotoTiles_cascade_column_inner" style="display:block;margin:0 3px;overflow:hidden;">';
           for($i = $col;$i<$opts[$this->src.'_photo_number'];$i+=$opts['style_column_number']){
-            $has_link = $this->get_link($i); // Add link
             $css = "margin:1px 0 5px 0;padding:0;max-width:100%;";
             $pin = $this->get_option( 'pinterest_pin_it_button' );
             $this->add_image($i,$css,$pin); // Add image
-            if( $has_link ){ $this->out .= '</a>'; } // Close link
           }
           $this->out .= '</div></div>';
         }
@@ -350,7 +350,6 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestTertiary{
         $this->out .= '<div id="'.$this->wid.'-image-list" class="AlpinePhotoTiles_image_list_class" style="display:none;visibility:hidden;">'; 
         
           for($i = 0;$i<$opts[$this->src.'_photo_number'];$i++){
-            $has_link = $this->get_link($i); // Add link
 
             $this->add_image($i); // Add image
             
@@ -358,7 +357,6 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestTertiary{
             if( "gallery" == $opts['style_option'] && !empty( $this->photos[$i]['image_original'] ) ){
               $this->out .= '<img class="AlpinePhotoTiles-original-image" src="' . $this->photos[$i]['image_original']. '" />';
             }
-            if( $has_link ){ $this->out .= '</a>'; } // Close link
           }
         $this->out .= '</div>';
         
