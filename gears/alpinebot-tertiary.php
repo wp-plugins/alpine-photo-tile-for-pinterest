@@ -112,7 +112,7 @@ class PhotoTileForPinterestTertiary extends PhotoTileForPinterestSecondary{
                 
                 // It is unclear what Pinterest's file structure is.  It keeps changing.
                 $the_photo['image_source'] = @str_replace('/192/', $size_id.'/', $photourl_current);
-                if( $size_id == '/75' ){
+                if( $size_id == '/75' &&  (strpos($the_photo['image_source'],'.pinimg.com') === false)){
                   $the_photo['image_source'] = @str_replace('/192x/', '/75/', $the_photo['image_source']);
                 }else{
                   $the_photo['image_source'] = @str_replace('/192x/', $size_id.'x/', $the_photo['image_source']);
@@ -255,7 +255,7 @@ class PhotoTileForPinterestTertiary extends PhotoTileForPinterestSecondary{
 
                   // It is unclear what Pinterest's file structure is.  It keeps changing.
                   $the_photo['image_source'] = @str_replace('/192/', $size_id.'/', $photourl_current);
-                  if( $size_id == '/75' ){
+                  if( $size_id == '/75' && (strpos($the_photo['image_source'],'.pinimg.com') === false) ){
                     $the_photo['image_source'] = @str_replace('/192x/', '/75/', $the_photo['image_source']);
                   }else{
                     $the_photo['image_source'] = @str_replace('/192x/', $size_id.'x/', $the_photo['image_source']);
