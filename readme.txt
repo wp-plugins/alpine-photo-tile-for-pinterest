@@ -1,10 +1,10 @@
 === Alpine PhotoTile for Pinterest ===
 Contributors: theAlpinePress
-Donate link: thealpinepress.com
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%40thealpinepress%2ecom&lc=US&item_name=Alpine%20PhotoTile%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: photos, pinterest, pins, pinboard, photostream, pictures, widget, sidebar, gallery, lightbox, fancybox, colorbox, prettybox
 Requires at least: 2.8
 Tested up to: 3.5
-Stable tag: 1.2.4.3
+Stable tag: 1.2.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -132,3 +132,20 @@ I am a one-man development team and I distribute these plugins for free, so plea
 * Added updateGlobalOptions and removed individual option calls
 * Added donate button
 * Fixed lightbox param option
+
+= 1.2.5 =
+* Added feed fetch with wp_remote_get and simplexml_load_string
+* Due to Pinterest size notation changes, changed 75px size to 75x75
+* Added fallback to dynamic style and script loading using jQuery
+* Various small fixes
+* Moved cache location
+* Updated ColorBox plugin
+* Set Object params to private and implemeted set, check, and get function
+* Implemeted do_alpine_method call
+* Created active options and results functions
+* Added meta and settings links
+
+= TODO =
+* Add caption to display
+* Rebuild jQuery display
+* Check with Contact Form 7
