@@ -504,6 +504,10 @@ class PhotoTileForPinterestBotTertiary extends PhotoTileForPinterestBotSecondary
     $this->append_active_result('hidden','<!-- Request made -->');
     if( is_wp_error( $response ) || !isset($response['body']) ) {
       $this->append_active_result('hidden','<!-- Failed using wp_remote_get(), simplexml_load_string() and XML @ '.$request.' -->');
+      if ( is_wp_error( $response ) ) {
+        $error_string = $response->get_error_message();
+        $this->append_active_result('hidden','<!-- WP Error message: '.$error_string.' -->');
+      }
       return false;
     }else{
       $xml_string = $response['body'];
@@ -723,7 +727,7 @@ class PhotoTileForPinterestBotTertiary extends PhotoTileForPinterestBotSecondary
         $rss->set_feed_url( $request );
         $rss->force_feed(true);
         $rss->enable_cache(false);
-        $rss->set_timeout(60);
+        $rss->set_timeout(30);
         $rss->init();
         $rss->handle_content_type();
       }else{
@@ -736,7 +740,7 @@ class PhotoTileForPinterestBotTertiary extends PhotoTileForPinterestBotSecondary
       $this->set_active_result('feed_found',false);
       $this->append_active_result('hidden','<!-- Failed twice using fetch_feed() and RSS @ '.$request.' -->');
       if ( is_wp_error( $rss ) ) {
-        echo $error_string = $rss->get_error_message();
+        $error_string = $rss->get_error_message();
         $this->append_active_result('hidden','<!-- WP Error message: '.$error_string.' -->');
       }elseif( !empty($rss->error) ){
         $this->append_active_result('hidden','<!-- SimplePie Error message: '.$rss->error.' -->');
