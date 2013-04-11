@@ -197,7 +197,7 @@ class PhotoTileForPinterestAdminSecondary extends PhotoTileForPinterestPrimary{
  * Function displays donation request
  *  
  * @ Since 1.2.4
- *
+ * @ Updated 1.2.5
  */
   function admin_donate_button(){
     $phrases = array('Pocket change is appreciated.','Buy me a cup of tea?','Help me pay my rent?','You tip your waiter. Why not your WordPress developer?','You tip the pizza deliver boy. Why not your WordPress programmer?');

@@ -20,7 +20,7 @@ class PhotoTileForPinterestPrimary {
   private $name = 'Alpine PhotoTile for Pinterest';
   private $info = 'http://thealpinepress.com/alpine-phototile-for-pinterest/';
   private $wplink = 'http://wordpress.org/extend/plugins/alpine-photo-tile-for-pinterest/';
-  private $donatelink = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%40thealpinepress%2ecom&lc=US&item_name=Alpine%20PhotoTile%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted';
+  private $donatelink = 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%40thealpinepress%2ecom&lc=US&item_name=Alpine%20PhotoTile%20for%20Pinterest%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted';
   private $page = 'AlpineTile: Pinterest';
   private $src = 'pinterest';
   private $hook = 'APTFPINbyTAP_hook';

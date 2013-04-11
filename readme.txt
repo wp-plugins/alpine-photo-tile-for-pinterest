@@ -1,10 +1,10 @@
 === Alpine PhotoTile for Pinterest ===
 Contributors: theAlpinePress
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%40thealpinepress%2ecom&lc=US&item_name=Alpine%20PhotoTile%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%40thealpinepress%2ecom&lc=US&item_name=Alpine%20PhotoTile%20Donation%20for%20Pinterest&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: photos, pinterest, pins, pinboard, photostream, pictures, widget, sidebar, gallery, lightbox, fancybox, colorbox, prettybox
 Requires at least: 2.8
 Tested up to: 3.5
-Stable tag: 1.2.5
+Stable tag: 1.2.5.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -144,6 +144,10 @@ I am a one-man development team and I distribute these plugins for free, so plea
 * Implemeted do_alpine_method call
 * Created active options and results functions
 * Added meta and settings links
+
+= 1.2.5.1 =
+* Error reporting for fetch_feed and SimplePie attempts
+
 
 = TODO =
 * Add caption to display
