@@ -25,7 +25,7 @@ class PhotoTileForPinterestPrimary {
   private $src = 'pinterest';
   private $hook = 'APTFPINbyTAP_hook';
   private $plugins = array('flickr','tumblr','instagram','picasa-and-google-plus','smugmug');
-  private $termsofservice = '';
+  private $termsofservice = "By using this plugin, you are agreeing to the Pinterest <a href='http:http://about.pinterest.com/use/' target='_blank'>Acceptable Use Policy</a>.";
   
   private $root = 'AlpinePhotoTiles';
   private $wjs = 'AlpinePhotoTiles_script';
@@ -310,7 +310,7 @@ class PhotoTileForPinterestPrimary {
     }elseif( 'fancybox' == $string ){
       return $this->url.'/js/fancybox/jquery.fancybox-1.3.4.pack.js?ver=1.3.4';
     }elseif( 'prettyphoto' == $string ){
-      return $this->url.'/js/prettyphoto/js/jquery.prettyPhoto.js?ver=3.1.4';
+      return $this->url.'/js/prettyPhoto/js/jquery.prettyPhoto.js?ver=3.1.4';
     }elseif( 'colorbox' == $string ){
       return $this->url.'/js/colorbox/jquery.colorbox-min.js?ver=1.4.5';	
     }elseif( 'alpine-fancybox' == $string ){
@@ -332,7 +332,7 @@ class PhotoTileForPinterestPrimary {
     }elseif( 'fancybox' == $string ){
       return $this->url.'/js/fancybox/jquery.fancybox-1.3.4.css?ver=1.3.4';
     }elseif( 'prettyphoto' == $string ){
-      return $this->url.'/js/prettyphoto//css/prettyPhoto.css?ver=3.1.4';
+      return $this->url.'/js/prettyPhoto/css/prettyPhoto.css?ver=3.1.4';
     }elseif( 'colorbox' == $string ){
       return $this->url.'/js/colorbox/colorbox.css?ver=1.3.21';	
     }elseif( 'alpine-fancybox' == $string ){
