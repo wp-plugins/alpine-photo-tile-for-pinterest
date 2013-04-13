@@ -365,6 +365,7 @@ class PhotoTileForPinterestBotTertiary extends PhotoTileForPinterestBotSecondary
         'vers' => $this->get_private('vers'),
         'src' => (isset($pinterest_options['pinterest_source'])?$pinterest_options['pinterest_source']:''),
         'uid' => $pinterest_uid,
+        'board' => (isset($pinterest_options['pinterest_user_board'])?$pinterest_options['pinterest_user_board']:''),
         'num' => (isset($pinterest_options['pinterest_photo_number'])?$pinterest_options['pinterest_photo_number']:''),
         'off' => (isset($pinterest_options['photo_feed_offset'])?$pinterest_options['photo_feed_offset']:''),
         'link' => (isset($pinterest_options['pinterest_display_link'])?$pinterest_options['pinterest_display_link']:''),
