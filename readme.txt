@@ -3,15 +3,15 @@ Contributors: theAlpinePress
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%40thealpinepress%2ecom&lc=US&item_name=Alpine%20PhotoTile%20Donation%20for%20Pinterest&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: photos, pinterest, pins, pinboard, photostream, pictures, widget, sidebar, gallery, lightbox, fancybox, colorbox, prettybox
 Requires at least: 2.8
-Tested up to: 3.5
-Stable tag: 1.2.5.3
+Tested up to: 3.8
+Stable tag: 1.2.6.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Stylish and compact plugin for displaying Pinterest images in a sidebar, post, or page. 
 
 == Description == 
-The Alpine PhotoTile for Pinterest is capable of retrieving photos from a particular Pinterest user or pin board. The photos can be linked to the your Pinterest page, a specific URL, or to a Lightbox slideshow. Also, the Shortcode Generator makes it easy to insert the widget into posts without learning any of the code. This lightweight but powerful widget takes advantage of WordPress's built in JQuery scripts to create a sleek presentation that I hope you will like. A full description and demonstration is available at [the Alpine Press](http://thealpinepress.com/alpine-phototile-for-pinterest/ "Plugin Demo").
+Display photos from a Pinterest user or pin board with the Alpine PhotoTile for Pinterest. The photos can be linked to the your Pinterest page, a specific URL, or to a Lightbox slideshow. Also, the Shortcode Generator makes it easy to insert the widget into posts without learning any of the code. This lightweight but powerful widget takes advantage of WordPress's built in JQuery scripts to create a sleek presentation that I hope you will like. A full description and demonstration is available at [the Alpine Press](http://thealpinepress.com/alpine-phototile-for-pinterest/ "Plugin Demo").
 
 **Features:**
 
@@ -59,9 +59,9 @@ Yes, rather than explaining how to setup the shortcode, I've created a method of
 
 The plugin caches or stores the Pinterest feed for three hours. If the new photos have still not appeared after this time, it is possible that Pinterest is responsible for the delay. While Pinterest is fairly prompt about updating photo feeds, periods of high traffic (especially on weekdays between 10am and 4pm) can cause a delay in feed updates.
 
-**Can I show more than 20 photos?**
+**Can I show more than 25 photos?**
 
-Sorry but no. Pinterest has not yet released an official api and so the feeds are limited to 20 pins.
+Sorry but no. Pinterest has not yet released an official api and so the feeds are limited to 25 pins.
 
 If you have any more questions, please leave a message at [the Alpine Press](http://thealpinepress.com/alpine-phototile-for-pinterest/ "Plugin Demo").
 I am a one-man development team and I distribute these plugins for free, so please be patient with me.
@@ -145,11 +145,22 @@ I am a one-man development team and I distribute these plugins for free, so plea
 * Created active options and results functions
 * Added meta and settings links
 
-= 1.2.5.3 =
+= 1.2.6 =
 * Error reporting for fetch_feed and SimplePie attempts
-* Fixed jQuery bug
+* Fixed jQuery bug (Removed all <> tags from inline scripts)
+* Add stripslashes text sanitization
+* Changed lightbox parameters option from CSS to stripslashes sanitization
+
+= 1.2.6.1  =
+* Check compatibility with WP 3.8
+* Small CSS changes (Padding and hover white background)
+* Replaced deprecated jQuery APIs  ( .load() and .browser )
+* Updated prettyPhoto and colorbox
+
 
 = TODO =
+* Show full description (not just 20 letter title)
+* Change to FancyBox 2
 * Add caption to display
 * Rebuild jQuery display
 * Check with Contact Form 7

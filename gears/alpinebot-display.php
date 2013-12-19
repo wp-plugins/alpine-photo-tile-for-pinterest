@@ -488,7 +488,7 @@ class PhotoTileForPinterestBotTertiary extends PhotoTileForPinterestBotSecondary
  *  Function for making Pinterest RSS request using wp_remote_get and simplexml_load_string()
  *  
  *  @ Since 1.2.4
- *  @ Updated 1.2.5
+ *  @ Updated 1.2.6
  */
   function try_simplexmlstring(){
   
@@ -863,7 +863,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBotTertiary{
  *  Function for printing vertical style
  *  
  *  @ Since 0.0.1
- *  @ Updated 1.2.5
+ *  @ Updated 1.2.6.1
  */
   function display_vertical(){
     $this->set_private('out',''); // Clear any output;
@@ -902,7 +902,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBotTertiary{
     if( !empty($opts['style_shadow']) || !empty($opts['style_border']) || !empty($opts['style_highlight'])  ){
       $this->add("
 <script>
-  jQuery(window).load(function() {
+  jQuery(window).on('load',function() {
     if( jQuery().AlpineAdjustBordersPlugin ){
       jQuery('#".$this->get_private('wid')."-vertical-parent').AlpineAdjustBordersPlugin({
         highlight:'".$highlight."'
@@ -931,7 +931,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBotTertiary{
  *  Function for printing cascade style
  *  
  *  @ Since 0.0.1
- *  @ Updated 1.2.5
+ *  @ Updated 1.2.6.1
  */
   function display_cascade(){
     $this->set_private('out',''); // Clear any output;
@@ -979,8 +979,8 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBotTertiary{
     if( !empty($opts['style_shadow']) || !empty($opts['style_border']) || !empty($opts['style_highlight'])  ){
       $this->add("
 <script>
-  jQuery(window).load(function() {
-    if(jQuery().AlpineAdjustBordersPlugin ){
+  jQuery(window).on('load',function() {
+    if( jQuery().AlpineAdjustBordersPlugin ){
       jQuery('#".$this->get_private('wid')."-cascade-parent').AlpineAdjustBordersPlugin({
         highlight:'".$highlight."'
       });
@@ -993,7 +993,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBotTertiary{
         }else{
           jQuery('head').append(link);
         }
-        if(jQuery().AlpineAdjustBordersPlugin ){
+        if( jQuery().AlpineAdjustBordersPlugin ){
           jQuery('#".$this->get_private('wid')."-cascade-parent').AlpineAdjustBordersPlugin({
             highlight:'".$highlight."'
           });
@@ -1009,7 +1009,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBotTertiary{
  *  Function for printing and initializing JS styles
  *  
  *  @ Since 0.0.1
- *  @ Updated 1.2.5
+ *  @ Updated 1.2.6.1
  */
   function display_hidden(){
     $this->set_private('out',''); // Clear any output;
@@ -1069,7 +1069,7 @@ class PhotoTileForPinterestBot extends PhotoTileForPinterestBotTertiary{
 });");
       }
 $this->add("
-jQuery(window).load(function() {
+jQuery(window).on('load',function() {
   jQuery('#".$wid."-AlpinePhotoTiles_container').removeClass('loading');
   if( jQuery().AlpinePhotoTilesPlugin ){
     AlpinePhotoTilesPlugin();
@@ -1127,7 +1127,7 @@ jQuery(window).load(function() {
   }
 }); //Close load
 </script>");      
-  } 
+  }
 /**
  *  Update photo number count
  *  
@@ -1212,6 +1212,7 @@ jQuery(window).load(function() {
  *  Get Image Link
  *  
  *  @ Since 1.2.2
+ *  @ Updated 1.2.6
  */
   function get_link($i){
     $src = $this->get_private('src');
@@ -1230,7 +1231,7 @@ jQuery(window).load(function() {
       $this->add('<a href="' . $linkurl . '" class="AlpinePhotoTiles-link" target="_blank" title='."'". $phototitle ."'".' alt='."'". $phototitle ."'".'>');
       return true;
     }elseif( 'link' == $link && !empty($url) ){
-      $this->add('<a href="' . $url . '" class="AlpinePhotoTiles-link" target="_blank" title='."'". $phototitle ."'".' alt='."'". $phototitle ."'".'>'); 
+      $this->add('<a href="' . $url . '" class="AlpinePhotoTiles-link" title='."'". $phototitle ."'".' alt='."'". $phototitle ."'".'>'); 
       return true;
     }elseif( 'fancybox' == $link && !empty($originalurl) ){
       $light = $this->get_option( 'general_lightbox' );
@@ -1274,7 +1275,7 @@ jQuery(window).load(function() {
  *  Setup Lightbox Call
  *  
  *  @ Since 1.2.3
- *  @ Updated 1.2.5
+ *  @ Updated 1.2.6
  */
   function add_lightbox_call(){
     $src = $this->get_private('src');
@@ -1287,7 +1288,7 @@ jQuery(window).load(function() {
       if( !empty($lightScript) && !empty($lightStyle) ){
         $this->add("
 <script>
-  jQuery(window).load(function() {
+  jQuery(window).on('load',function() {
     if( !jQuery().".$check." ){
       var css = '".$lightStyle."';
       var link = jQuery(document.createElement('link')).attr({'rel':'stylesheet','href':css,'type':'text/css','media':'screen'});
