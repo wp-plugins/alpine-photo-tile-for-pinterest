@@ -3,7 +3,7 @@
 Plugin Name: Alpine PhotoTile for Pinterest
 Plugin URI: http://thealpinepress.com/alpine-phototile-for-pinterest/
 Description: Display photos from a  Pinterest user or pin board with the Alpine PhotoTile for Pinterest. The photos can be linked to the your Pinterest page, a specific URL, or to a Fancybox slideshow. Also, the Shortcode Generator makes it easy to insert the widget into posts without learning any of the code. This lightweight but powerful widget takes advantage of WordPress's built in JQuery scripts to create a sleek presentation that I hope you will like.
-Version: 1.2.6.1
+Version: 1.2.6.2
 Author: the Alpine Press
 Author URI: http://thealpinepress.com/
 License: GNU General Public License v2.0
