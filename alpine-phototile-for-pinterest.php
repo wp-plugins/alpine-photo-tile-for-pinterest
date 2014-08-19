@@ -3,7 +3,7 @@
 Plugin Name: Alpine PhotoTile for Pinterest
 Plugin URI: http://thealpinepress.com/alpine-phototile-for-pinterest/
 Description: Display photos from a  Pinterest user or pin board with the Alpine PhotoTile for Pinterest. The photos can be linked to the your Pinterest page, a specific URL, or to a Fancybox slideshow. Also, the Shortcode Generator makes it easy to insert the widget into posts without learning any of the code. This lightweight but powerful widget takes advantage of WordPress's built in JQuery scripts to create a sleek presentation that I hope you will like.
-Version: 1.2.6.2
+Version: 1.2.6.3
 Author: the Alpine Press
 Author URI: http://thealpinepress.com/
 License: GNU General Public License v2.0
@@ -41,22 +41,21 @@ Copyright 2013  Eric Burger
     define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
   if ( ! defined( 'WP_PLUGIN_DIR' ) )
     define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
-  
+
+	// Load the pieces
+	include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/alpinebot-primary.php' );
+	include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/alpinebot-display.php' );
+	include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/alpinebot-admin.php' );
+	include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/plugin-widget.php' );
+	include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/plugin-shortcode.php' );
+
 /**
  * Register Widget
  *  
  * @ Since 1.0.0
- * @ Updated 1.2.5
+ * @ Updated 1.6.3
  */
   function APTFPINbyTAP_widget_register() {
-
-    include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/alpinebot-primary.php' );
-    include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/alpinebot-display.php' );
-    if( is_admin() ){
-      include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/alpinebot-admin.php' );
-    }
-    include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/plugin-widget.php' );
-    include_once( WP_PLUGIN_DIR.'/'.basename(dirname(__FILE__)).'/gears/plugin-shortcode.php' );
     register_widget( 'Alpine_PhotoTile_for_Pinterest' );
   }
   add_action('widgets_init','APTFPINbyTAP_widget_register');

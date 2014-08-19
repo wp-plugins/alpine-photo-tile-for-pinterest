@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eric%
 Tags: photos, pinterest, pins, pinboard, photostream, pictures, widget, sidebar, gallery, lightbox, fancybox, colorbox, prettybox
 Requires at least: 2.8
 Tested up to: 3.8
-Stable tag: 1.2.6.2
+Stable tag: 1.2.6.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -159,6 +159,9 @@ I am a one-man development team and I distribute these plugins for free, so plea
 
 = 1.2.6.2  =
 * jQuery backwards compatibility ( .bind() function for jQuery v1.6.3 and less )
+
+= 1.2.6.3  =
+* Load files before APTFFbyTAP_widget_register()
 
 = TODO =
 * Show full description (not just 20 letter title)
